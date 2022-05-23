@@ -1,0 +1,13 @@
+deployment:
+    tasks:
+    - export DEPLOYPATH=/home/techqbnv/public_html/pusso
+    - /bin/cp -R bin $DEPLOYPATH
+    - /bin/cp -R config $DEPLOYPATH
+    - /bin/cp -R public $DEPLOYPATH
+    - /bin/cp -R src $DEPLOYPATH
+    - /bin/cp -R templates $DEPLOYPATH
+    - /bin/cp -R translations $DEPLOYPATH
+    - /bin/cp -R vendor $DEPLOYPATH
+    - /bin/cp .env $DEPLOYPATH
+    - /bin/cp LICENCE $DEPLOYPATH
+    - /bin/cp composer.json $DEPLOYPATH

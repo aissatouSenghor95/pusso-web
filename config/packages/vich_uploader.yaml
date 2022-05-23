@@ -1,0 +1,163 @@
+vich_uploader:
+    db_driver: orm
+
+    mappings:
+        piece_identites:
+            uri_prefix: /files/pi
+            upload_destination: '%kernel.project_dir%/public/files/pi'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        contrats:
+            uri_prefix: /files/contrats
+            upload_destination: '%kernel.project_dir%/public/files/contrats'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        domiciles:
+            uri_prefix: /files/domiciles
+            upload_destination: '%kernel.project_dir%/public/files/domiciles'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        statut_commerce:
+            uri_prefix: /files/statut_commerce
+            upload_destination: '%kernel.project_dir%/public/files/statut_commerce'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        certificats_heredite:
+            uri_prefix: /files/certificats_heredite
+            upload_destination: '%kernel.project_dir%/public/files/certificats_heredite'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        contrats_location:
+            uri_prefix: /files/contrats_location
+            upload_destination: '%kernel.project_dir%/public/files/contrats_location'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        demandes_manuscrites:
+            uri_prefix: /files/demandes_manuscrites
+            upload_destination: '%kernel.project_dir%/public/files/demandes_manuscrites'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        plans_situation:
+            uri_prefix: /files/plans_situation
+            upload_destination: '%kernel.project_dir%/public/files/plans_situation'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        jeu_situation:
+            uri_prefix: /files/jeu_situation
+            upload_destination: '%kernel.project_dir%/public/files/jeu_situation'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        jeu_masse:
+            uri_prefix: /files/jeu_masse
+            upload_destination: '%kernel.project_dir%/public/files/jeu_masse'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        jeu_plan:
+            uri_prefix: /files/jeu_plan
+            upload_destination: '%kernel.project_dir%/public/files/jeu_plan'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        jeu_coupe:
+            uri_prefix: /files/jeu_coupe
+            upload_destination: '%kernel.project_dir%/public/files/jeu_coupe'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        jeu_facade:
+            uri_prefix: /files/jeu_facade
+            upload_destination: '%kernel.project_dir%/public/files/jeu_facade'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        fiche_renseignement:
+            uri_prefix: /files/fiche_renseignement
+            upload_destination: '%kernel.project_dir%/public/files/fiche_renseignement'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        devis_projet:
+            uri_prefix: /files/devis_descriptif
+            upload_destination: '%kernel.project_dir%/public/files/devis_descriptif'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        plans_fosses_septiques:
+            uri_prefix: /files/plans_fosses_septiques
+            upload_destination: '%kernel.project_dir%/public/files/plans_fosses_septiques'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        autorisation_proprietaire:
+            uri_prefix: /files/autorisation_proprietaire
+            upload_destination: '%kernel.project_dir%/public/files/autorisation_proprietaire'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        quota_accorde:
+            uri_prefix: /files/quota_accorde
+            upload_destination: '%kernel.project_dir%/public/files/quota_accorde'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        mandat_gerance:
+            uri_prefix: /files/mandat_gerance
+            upload_destination: '%kernel.project_dir%/public/files/mandat_gerance'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true
+
+        convention_exploitation:
+            uri_prefix: /files/mandat_gerance
+            upload_destination: '%kernel.project_dir%/public/files/mandat_gerance'
+            namer: Vich\UploaderBundle\Naming\SmartUniqueNamer
+            inject_on_load: false
+            delete_on_update: true
+            delete_on_remove: true

@@ -1,0 +1,171 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    {{ parent() }} - Mes demandes
+{% endblock %}
+
+{% block stylesheets %}
+    <!-- DataTables -->
+    <link href="{{ asset('zinzer/plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('zinzer/plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_CLIENT') %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card m-b-30">
+                    <div class="card-body">
+                        <h4 class="card-title">Mes demandes</h4>
+                        <hr>
+                        <table id="listeDemandes" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                                <tr>
+                                    <th>Référence</th>
+                                    <th>Organisme</th>
+                                    <th>Démarche</th>
+                                    <th>Date de création</th>
+                                    <th>Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in demandes %}
+                                <tr onclick="document.location='{{ path('app_demande_view', {id: d.id}) }}'" style="cursor: pointer" class="">
+                                    <td class="text-bold"><b>#{{ d.reference ?? d.id }}</b></td>
+                                    <td>{{ d.organisme.nom }}</td>
+                                    <td>{{ d.service.libelle }}</td>
+                                    <td>{{ d.createdAt | date('d/m/Y H:i:s') }}</td>
+                                    <td class="text-center"><span class="badge {% if d.statut.id == 1 or d.statut.id == 2 %} badge-warning {% elseif d.statut.id == 3 %} badge-info {% elseif d.statut.id == 4 %} badge-success {% else %} badge-danger {% endif %}">{{ d.statut.libelle }}</span></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% elseif is_granted('ROLE_CUSTOMER_SERVICE') or is_granted('ROLE_ADMIN')  %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card m-b-30">
+                    <div class="card-body">
+                        <h4 class="card-title">Mes demandes</h4>
+                        <hr>
+                        <table id="listeDemandes" class="table table-bordered dt-responsive nowrap table-hover" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Client</th>
+                                <th>Organisme</th>
+                                <th>Démarche</th>
+                                <th>Date de création</th>
+                                <th>Statut</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in demandes %}
+                                <tr onclick="document.location='{{ path('app_demande_view', {id: d.id}) }}'" style="cursor: pointer" class="">
+                                    <td class="text-bold"><b>#{{ d.reference ?? d.id }}</b></td>
+                                    <td>{{ d.owner.nom }} {{ d.owner.prenom }}</td>
+                                    <td>{{ d.organisme.nom }}</td>
+                                    <td>{{ d.service.libelle }}</td>
+                                    <td>{{ d.createdAt | date('d/m/Y H:i:s') }}</td>
+                                    <td class="text-center"><span class="badge {% if d.statut.id == 1 or d.statut.id == 2 %} badge-warning {% elseif d.statut.id == 3 %} badge-info {% elseif d.statut.id == 4 %} badge-success {% else %} badge-danger {% endif %}">{{ d.statut.libelle }}</span></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% elseif is_granted('ROLE_PARTENAIRE')%}
+        <div class="row">
+            <div class="col-12">
+                <div class="card m-b-30">
+                    <div class="card-body">
+                        <h4 class="card-title">Mes demandes</h4>
+                        <hr>
+                        <table id="listeDemandes" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Client</th>
+                                <th>Organisme</th>
+                                <th>Démarche</th>
+                                <th>Date de création</th>
+                                <th>Statut</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in demandes %}
+                                <tr onclick="document.location='{{ path('app_demande_view', {id: d.id}) }}'" style="cursor: pointer" class="{% if d.statut.id == 1 or d.statut.id == 2 %} table-warning {% elseif d.statut.id == 3 %} table-info {% elseif d.statut.id == 4 %} table-success {% else %} table-danger {% endif %}">
+                                    <td class="text-bold"><b>#{{ d.reference ?? d.id }}</b></td>
+                                    <td>{{ d.owner.nom }} {{ d.owner.prenom }}</td>
+                                    <td>{{ d.organisme.nom }}</td>
+                                    <td>{{ d.service.libelle }}</td>
+                                    <td>{{ d.createdAt | date('d/m/Y H:i:s') }}</td>
+                                    <td class="text-center"><span class="badge {% if d.statut.id == 1 or d.statut.id == 2 %} badge-warning {% elseif d.statut.id == 3 %} badge-info {% elseif d.statut.id == 4 %} badge-success {% else %} badge-danger {% endif %}">{{ d.statut.libelle }}</span></td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Required datatable js -->
+    <script src="{{ asset('zinzer/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <!-- Buttons examples -->
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/jszip.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.colVis.min.js') }}"></script>
+    <!-- Responsive examples -->
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#listeDemandes').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "columnDefs": [
+                {"orderable": false, "targets": {% if is_granted('ROLE_CLIENT') %} 4 {% elseif is_granted('ROLE_CUSTOMER_SERVICE') %} 5 {% elseif is_granted('ROLE_PARTENAIRE') %} 5 {% endif %}}
+            ],
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                "lengthMenu": "_MENU_ lignes/page",
+                    "zeroRecords": "Aucune demande {% if is_granted('ROLE_CLIENT') %}, <a href='{{ path('app_service_all') }}'>en créer ?</a>{% endif %}",
+                    "info": "_PAGE_ / _PAGES_",
+                    "infoEmpty": "Pas de lignes à afficher",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "paginate": {
+                    "previous": "Précédent",
+                        "next":"Suivant"
+                },
+                "search": "<label class=\"mob-selection\">{% if is_granted('ROLE_CLIENT') %} <a class=\"btn btn-sm btn-pusso-primary\" href='{{ path('app_service_all') }}'><i class=\"fas fa-plus\"> Nouvelle</i></a>| {% endif %}Rechercher </label>"
+                }
+            });
+        })
+    </script>
+{% endblock %}

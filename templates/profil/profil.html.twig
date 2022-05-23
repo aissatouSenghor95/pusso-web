@@ -1,0 +1,189 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    {{ parent() }} - Profil
+{% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('zinzer/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+{% endblock %}
+{% block body %}
+
+    {% if is_granted('ROLE_USER') %}
+        <div class="container bootstrap snippet">
+            <div class="row">
+                {% if is_granted('ROLE_CLIENT') %}
+                    <div class="col-lg-3 mt-1 col-sm-12"><!--left col-->
+                        <ul class="list-group">
+                            <li class="list-group-item text-muted">Activité <i class="fa fa-dashboard fa-1x"></i></li>
+                            <li class="list-group-item text-right"><span class="float-left"><strong>Demandes</strong></span> {{ nbr_demandes }}</li>
+                        </ul>
+                    </div><!--/col-3-->
+                {% endif %}
+                <div class="col-lg-9 mt-1 col-sm-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title text-pusso-primary">Mettre à jour mes infos.</h4>
+                            <hr>
+                            {{ form_start(form,{'attr' : {'class' : 'form-horizontal m-t-15', 'onsubmit':'showLoadingButton()'}}) }}
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Nom</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.nom,{'attr':{'class':'form-control','placeholder':'Votre nom de famille'}}) }}
+                                    <div class="form-control-feedback">{{ form_errors(form.nom) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Prénom</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.prenom,{'attr':{'class':'form-control','placeholder':'Votre prénom'}}) }}
+                                    <div class="form-control-feedback">{{ form_errors(form.prenom) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4  col-form-label">Date de naissance</label>
+                                <div class="col-sm-8 input-group">
+                                    {{ form_widget(form.birthday,{'attr':{'class':'form-control', 'placeholder':'JJ/MM/AAAA'}}) }}
+                                    <div class="input-group-append bg-custom b-0">
+                                        <span class="input-group-text">
+                                            <i class="fa fa-birthday-cake"></i>
+                                        </span>
+                                    </div>
+                                </div>
+                                <div class="form-control-feedback">{{ form_errors(form.birthday) }}</div>
+                            </div>
+
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Vous êtes ?</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.sexe,{'attr':{'class':'form-control','placeholder':'Genre'}}) }}
+                                    <div class="form-control-feedback">{{ form_errors(form.sexe) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Ville</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.ville,{'attr':{'class':'form-control'}}) }}
+                                    <div class="form-control-feedback">{{ form_errors(form.ville) }}</div>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Adresse</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.adresse,{'attr':{'class':'form-control','placeholder':'Adresse'}}) }}
+                                    <div class="form-control-feedback">{{ form_errors(form.adresse) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Email</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.username,{'attr':{'class':'form-control','placeholder':'Adresse e-mail'}}) }}
+                                    <div class="form-control-feedback">{{ form_errors(form.username) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Mot de passe</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.plainPassword.first,{'attr':{'class':'form-control', 'placeholder':'Mot de passe'}}) }}
+                                    <div class="form-control-feedback">{{ form_errors(form.plainPassword.first) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Confirmation</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.plainPassword.second,{'attr':{'class':'form-control', 'placeholder':'Confirmer votre mot de passe'}}) }}
+                                    <div class="form-control-feedback">{{ form_errors(form.plainPassword.first) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label class="col-sm-4 col-form-label">Numéro de Tél.</label>
+                                <div class="col-sm-8">
+                                    {{ form_widget(form.numeroTel,{'attr':{'class':'form-control','placeholder':'Votre numéro de téléphone'}}) }}
+                                    <div class="form-control-feedback">{{ form_errors(form.numeroTel) }}</div>
+                                </div>
+                            </div>
+
+                            <div class="form-group text-center row m-t-20">
+                                <div class="col-12">
+                                    <button class="btn btn-pusso-primary btn-block waves-effect waves-light" id="submit_button" type="submit">Sauvegarder</button>
+                                    <button style="display: none;"  id="loading_button" class="btn btn-pusso-primary btn-block waves-effect waves-light"  type="button">
+                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                        Sauvegarde en cours...
+                                    </button>
+                                </div>
+                            </div>
+
+                            {{ form_rest(form) }}
+                            {{ form_end(form) }}
+                            <hr>
+
+                        </div><!--/tab-pane-->
+                    </div><!--/tab-pane-->
+                </div><!--/tab-content-->
+
+            </div><!--/col-9-->
+        </div><!--/row-->
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+    <!-- Bootstrap inputmask js -->
+    <script src="{{ asset('zinzer/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
+
+    <script src="{{ asset('zinzer/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        $(function () {
+            $('#user_register_birthday').datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'dd/mm/yyyy'
+            });
+        })
+
+    </script>
+
+    <!-- Sweet-Alert  -->
+    <script src="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/pages/sweet-alert.init.js') }}"></script>
+    <script>
+        function showLoadingButton() {
+            document.getElementById('submit_button').style.display ='none';
+            document.getElementById('loading_button').style.display ='block';
+        }
+    </script>
+    {% if modificationOK %}
+        <script>
+            swal(
+                {
+                    title: 'Mes informations',
+                    text: 'Données sauvegardées avec succès !',
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger m-l-10'
+                }
+            ) ;
+        </script>
+    {% endif %}
+{% endblock %}
+{% block bowser %}
+    <script>
+        jQuery.browser = {};
+        (function () {
+            jQuery.browser.msie = false;
+            jQuery.browser.version = 0;
+            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+                jQuery.browser.msie = true;
+                jQuery.browser.version = RegExp.$1;
+            }
+        })();
+    </script>
+{% endblock %}

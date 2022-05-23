@@ -1,0 +1,133 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    {{ parent() }} - Liste des administrateurs.
+{% endblock %}
+
+{% block stylesheets %}
+    <!-- DataTables -->
+    <link href="{{ asset('zinzer/plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('zinzer/plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block  body %}
+    <div class="row">
+        <div class="col-12">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('warning') %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+            <div class="card m-b-30">
+                <div class="card-body">
+                    <h4 class="card-title">Liste des admins.</h4>
+                    <hr>
+                    <table id="listeUsers" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                        <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Sexe</th>
+                            <th>Email</th>
+                            <th>Ville</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for user in users %}
+                            <tr class="{% if not user.isActive %} table-warning {% endif %}">
+                                <td>{{ user.nom }}</td>
+                                <td>{{ user.prenom }}</td>
+                                <td>{{ user.sexe.libelle }}</td>
+                                <td>{{ user.username }}</td>
+                                <td>{{ user.ville.nom }}</td>
+                                <td class="text-center">
+                                    <span class="{% if user.isActive %} text-success {% else %} text-danger {% endif %}"
+                                          title="{% if user.isActive %} Bloquer {% else %} Débloquer {% endif %}"
+                                          data-toggle="modal"
+                                          data-target="#modal-access-{{ user.id }}" style="cursor: pointer">
+                                        <i class="fa {% if not user.isActive %} fa-toggle-on {% else %} fa-toggle-off {% endif %}"></i>
+                                    </span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                    {% for user in users %}
+                        {{ include('modals/user_access.html.twig', {objet: user}) }}
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <!-- Required datatable js -->
+    <script src="{{ asset('zinzer/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <!-- Buttons examples -->
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/jszip.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.colVis.min.js') }}"></script>
+    <!-- Responsive examples -->
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#listeUsers').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "columnDefs": [
+                    {"orderable": false, "targets": 5}
+                ],
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "lengthMenu": "Afficher _MENU_ lignes par page",
+                    "zeroRecords": "Aucun utilisatreur trouvé",
+                    "info": "_PAGE_ / _PAGES_",
+                    "infoEmpty": "Pas de lignes à afficher",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "paginate": {
+                        "previous": "Précédent",
+                        "next":"Suivant"
+                    },
+                    "search": "Rechercher "
+                }
+            });
+        })
+    </script>
+{% endblock %}

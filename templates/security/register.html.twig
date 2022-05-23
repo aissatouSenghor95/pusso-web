@@ -1,0 +1,242 @@
+{% extends 'base-out.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Inscription
+{% endblock %}
+{% block stylesheet %}
+    <link href="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ asset('zinzer/plugins/bootstrap-datepicker/css/bootstrap-datepicker.min.css') }}" rel="stylesheet">
+{% endblock %}
+
+{% block body %}
+
+    <div class="mr-lg-5 ml-lg-5">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="row">
+                        <div class="col-md-8 col-sm-1">
+                        </div>
+                        <div class="col-md-4 col-sm-12 ">
+                            <div class="card mb-0">
+                                <div class="card-body">
+                                    <div class="p-2">
+                                        <div class="text-center">
+                                            <a href="{{ path('login') }}" class="logo logo-admin"><img src="{{ asset('images/logo_pusso.png') }}" height="112" alt="logo"></a>
+                                        </div>
+                                    </div>
+
+                                    <div class="p-2">
+
+                                        {% if not creationOK %}
+                                            {{ form_start(form,{'attr' : {'class' : 'form-horizontal m-t-15', 'onsubmit':'showLoadingButton()'}}) }}
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Nom</label>
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.nom,{'attr':{'class':'form-control','placeholder':'Votre nom de famille'}}) }}
+                                                    <div class="form-control-feedback">{{ form_errors(form.nom) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Prénom</label>
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.prenom,{'attr':{'class':'form-control','placeholder':'Votre prénom'}}) }}
+                                                    <div class="form-control-feedback">{{ form_errors(form.prenom) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4  col-form-label">Date de naissance</label>
+                                                <div class="col-sm-8 input-group">
+                                                    {{ form_widget(form.birthday,{'attr':{'class':'form-control', 'placeholder':'JJ/MM/AAAA'}}) }}
+                                                    <div class="input-group-append bg-custom b-0">
+                                                    <span class="input-group-text">
+                                                        <i class="fa fa-birthday-cake"></i>
+                                                    </span>
+                                                    </div>
+                                                </div>
+                                                <div class="form-control-feedback">{{ form_errors(form.birthday) }}</div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Vous êtes ?</label>
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.sexe,{'attr':{'class':'form-control custom-select','placeholder':'Genre'}}) }}
+                                                    <div class="form-control-feedback">{{ form_errors(form.sexe) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Ville</label>
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.ville,{'attr':{'class':'form-control custom-select'}}) }}
+                                                    <div class="form-control-feedback">{{ form_errors(form.ville) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Adresse</label>
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.adresse,{'attr':{'class':'form-control','placeholder':'Adresse'}}) }}
+                                                    <div class="form-control-feedback">{{ form_errors(form.adresse) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Email</label>
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.username,{'attr':{'class':'form-control','placeholder':'Adresse e-mail'}}) }}
+                                                    <div class="form-control-feedback">{{ form_errors(form.username) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Mot de passe</label>
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.plainPassword.first,{'attr':{'class':'form-control', 'placeholder':'Mot de passe'}}) }}
+                                                    <div class="form-control-feedback">{{ form_errors(form.plainPassword.first) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Confirmation</label>
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.plainPassword.second,{'attr':{'class':'form-control', 'placeholder':'Confirmer votre mot de passe'}}) }}
+                                                    <div class="form-control-feedback">{{ form_errors(form.plainPassword.first) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <label class="col-sm-4 col-form-label">Numéro de Tél.</label>
+                                                <div class="col-sm-8">
+                                                    {{ form_widget(form.numeroTel,{'attr':{'class':'form-control','placeholder':'Votre numéro de téléphone'}}) }}
+                                                    <div class="form-control-feedback">{{ form_errors(form.numeroTel) }}</div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group row">
+                                                <div class="col-12 mt-4">
+                                                    <div class="custom-control custom-checkbox">
+                                                        <input type="checkbox" class="custom-control-input" id="terms_and_conditions" required>
+                                                        <label class="custom-control-label font-weight-normal" for="terms_and_conditions">J'accepte les <a href="/" class="text-primary">Termes et Conditions</a></label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group text-center row m-t-20">
+                                                <div class="col-12">
+                                                    <button class="btn btn-pusso-primary btn-block waves-effect waves-light" id="submit_button" type="submit" disabled>S'inscrire</button>
+                                                    <button style="display: none;"  id="loading_button" class="btn btn-pusso-primary btn-block waves-effect waves-light"  type="button">
+                                                        <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                        Inscription en cours...
+                                                    </button>
+                                                </div>
+                                            </div>
+
+                                            <div class="form-group m-t-10 mb-0 row">
+                                                <div class="col-12 m-t-20 text-center">
+                                                    <a href="{{ path('login') }}" class="text-muted">Vous avez déjà un compte ?</a>
+                                                </div>
+                                            </div>
+                                            {{ form_rest(form) }}
+                                            {{ form_end(form) }}
+                                        {% endif %}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+              {#  <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title ml-1 text-center text-pusso-primary">Nos partenaires</h4>
+                            <hr>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-senelec.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-seneau.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-canal.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-woyofal.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-orange.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-onas.jpg') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-waw.png') }}"/>
+
+                        </div>
+                    </div>
+                </div>#}
+            </div>
+            <!-- end row -->
+        </div>
+
+{% endblock %}
+{% block javascripts %}
+    <script>
+        $('#terms_and_conditions').click(function(){
+            //If the checkbox is checked.
+            if($(this).is(':checked')){
+                //Enable the submit button.
+                $('#submit_button').attr("disabled", false);
+            } else{
+                //If it is not checked, disable the button.
+                $('#submit_button').attr("disabled", true);
+            }
+        });
+    </script>
+
+    <script>
+        function showLoadingButton() {
+            document.getElementById('submit_button').style.display ='none';
+            document.getElementById('loading_button').style.display ='block';
+        }
+    </script>
+
+    <!-- Bootstrap inputmask js -->
+    <script src="{{ asset('zinzer/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
+
+    <!-- Sweet-Alert  -->
+    <script src="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.min.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/pages/sweet-alert.init.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/bootstrap-datepicker/js/bootstrap-datepicker.min.js') }}"></script>
+    <script>
+        $(function () {
+            bsCustomFileInput.init() ;
+            $('#user_register_birthday').datepicker({
+                autoclose: true,
+                todayHighlight: true,
+                format: 'dd/mm/yyyy'
+            });
+        })
+
+    </script>
+
+    {% if creationOK %}
+        <script>
+            swal(
+                {
+                    title: 'Bienvenue !',
+                    text: 'Votre compte a été créé avec succès !',
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger m-l-10'
+                }
+            ).then(function () {
+                window.location = "{{ path('login') }}"
+            })
+        </script>
+    {% endif %}
+{% endblock %}
+{% block bowser %}
+    <script>
+        jQuery.browser = {};
+        (function () {
+            jQuery.browser.msie = false;
+            jQuery.browser.version = 0;
+            if (navigator.userAgent.match(/MSIE ([0-9]+)\./)) {
+                jQuery.browser.msie = true;
+                jQuery.browser.version = RegExp.$1;
+            }
+        })();
+    </script>
+{% endblock %}

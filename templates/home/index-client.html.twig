@@ -1,0 +1,47 @@
+<div class="row">
+
+    <div class="col-xl-3 col-md-6">
+        <div onclick="location.href='{{ path('app_demande_my_requests') }}'" class="card mini-stat text-center text-pusso-primary text-uppercase pusso-dashboard-card shadow">
+            <div class="p-3 mini-stat-desc">
+                <div class="clearfix">
+                    <h6 class="mt-3">Nombre de demandes</h6>
+                    <h1 class="mt-3">{{ nbrDemandes ?? 0 }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div onclick="location.href='{{ path('app_demande_en_etude') }}'" class="card mini-stat text-center text-pusso-primary text-uppercase pusso-dashboard-card shadow">
+            <div class="p-3 mini-stat-desc">
+                <div class="clearfix">
+                    <h6 class="mt-3">Demandes en étude</h6>
+                    <h1 class="mt-3">{{ nbrDemandesEncours ?? 0 }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div onclick="location.href='{{ path('app_demande_en_paiement') }}'" class="card mini-stat text-center text-pusso-primary text-uppercase pusso-dashboard-card shadow">
+            <div class="p-3 mini-stat-desc">
+                <div class="clearfix">
+                    <h6 class="mt-3">Paiements en attente</h6>
+                    <h1 class="mt-3">{{ nbrDemandesAttentePaiement ?? 0 }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="col-xl-3 col-md-6">
+        <div onclick="location.href='{{ path('app_demande_rejetees') }}'" class="card mini-stat text-center text-pusso-primary text-uppercase pusso-dashboard-card shadow">
+            <div class="p-3 mini-stat-desc">
+                <div class="clearfix">
+                    <h6 class="mt-3">Demandes rejetées</h6>
+                    <h1 class="mt-3">{{ nbrDemandesRejetees ?? 0 }}</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{#{% include 'common/nos-partenaires-client.html.twig' %}#}

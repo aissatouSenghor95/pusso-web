@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    {{ parent() }} - Accueil
+{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_CLIENT') %}
+        {% include 'home/index-client.html.twig' %}
+    {% elseif is_granted('ROLE_CUSTOMER_SERVICE') or is_granted('ROLE_ADMIN') %}
+        {% include 'home/index-csuser.html.twig' %}
+    {% elseif is_granted('ROLE_PARTENAIRE') %}
+        {% include 'home/index-partner.html.twig' %}
+    {% endif %}
+{% endblock %}

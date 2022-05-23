@@ -1,0 +1,29 @@
+Script started on 2022-05-16 16:15:24+00:00 [TERM="xterm-256color" TTY="/dev/tty" COLUMNS="80" LINES="24"]
+]0;aida@aida-Latitude-E5470: ~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[01;32maida@aida-Latitude-E5470[00m:[01;34m~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[00m$ symfony serve[A]0;aida@aida-Latitude-E5470: ~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[01;32maida@aida-Latitude-E5470[00m:[01;34m~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[00m$ gi[5Pt pushcommit -m" fichier composer json"
+Script done on 2022-05-16 16:22:28+00:00 [COMMAND_EXIT_CODE="0"]
+1d4397dcddfa9d0e89bbd799695b64f874c27[01;32maida@aida-Latitude-E5470[00m:[01;34m~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[00m$ composer update
+[32mLoading composer repositories with package information[39m
+[32mInfo from https://repo.packagist.org: [37;44m#StandWith[30;43mUkraine[0m[39m
+[32mUpdating dependencies[39m
+Nothing to modify in lock file
+[32mInstalling dependencies from lock file (including require-dev)[39m
+Nothing to install, update or remove
+[30;43mPackage swiftmailer/swiftmailer is abandoned, you should avoid using it. Use symfony/mailer instead.[39;49m
+[30;43mPackage symfony/swiftmailer-bundle is abandoned, you should avoid using it. Use symfony/mailer instead.[39;49m
+[32mGenerating optimized autoload files[39m
+[32m92 packages you are using are looking for funding.[39m
+[32mUse the `composer fund` command to find out more![39m
+> script
+Script started, file is typescript
+]0;aida@aida-Latitude-E5470: ~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[01;32maida@aida-Latitude-E5470[00m:[01;34m~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[00m$ symfony serve[A]0;aida@aida-Latitude-E5470: ~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[01;32maida@aida-Latitude-E5470[00m:[01;34m~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[00m$ gi[5Pt pushcommit -m" fichier composer json"[37;41mThe following exception is caused by a process timeout[39;49m
+[37;41mCheck https://getcomposer.org/doc/06-config.md#process-timeout for details[39;49m
+
+[33mIn Process.php line 1204:[39m
+[37;41m                                                             [39;49m
+[37;41m  The process "script" exceeded the timeout of 300 seconds.  [39;49m
+[37;41m                                                             [39;49m
+
+[32mupdate [--with WITH] [--prefer-source] [--prefer-dist] [--prefer-install PREFER-INSTALL] [--dry-run] [--dev] [--no-dev] [--lock] [--no-install] [--no-autoloader] [--no-suggest] [--no-progress] [-w|--with-dependencies] [-W|--with-all-dependencies] [-v|vv|vvv|--verbose] [-o|--optimize-autoloader] [-a|--classmap-authoritative] [--apcu-autoloader] [--apcu-autoloader-prefix APCU-AUTOLOADER-PREFIX] [--ignore-platform-req IGNORE-PLATFORM-REQ] [--ignore-platform-reqs] [--prefer-stable] [--prefer-lowest] [-i|--interactive] [--root-reqs] [--] [<packages>...][39m
+
+]0;aida@aida-Latitude-E5470: ~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[01;32maida@aida-Latitude-E5470[00m:[01;34m~/pusso-web-d551d4397dcddfa9d0e89bbd799695b64f874c27[00m$ 
+Script done on 2022-05-16 16:22:28+00:00 [COMMAND_EXIT_CODE="0"]

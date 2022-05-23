@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    {{ parent() }} - Tarification
+{% endblock %}
+{% block pageSubTitle %}
+    / <a class="text-muted" style="text-decoration: underline" href="{{ path('admin_organismes') }}">Organismes</a> / <em class="text-muted">{{ organisme.nom | upper }}</em>
+{% endblock %}
+{% block stylesheets %}
+    <!-- DataTables -->
+    <link href="{{ asset('zinzer/plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('zinzer/plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link href="../plugins/datatables/responsive.bootstrap4.min.css" rel="stylesheet" type="text/css" />
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-lg-12">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('warning') %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+        </div>
+        <div class="col-lg-12">
+            <div class="card m-b-30">
+                <div class="card-body">
+                    <h4 class="card-title">Liste des services</h4>
+                    <hr>
+                    <table id="listeServices" class="table dt-responsive nowrap" style="width: 100%;">
+                        <thead>
+                        <tr>
+                            <th>Libellé</th>
+                            <th>Frais</th>
+                            <th>Prix</th>
+                            <th>Actions</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        {% for s in organisme.services %}
+                            <tr>
+                                <td>{{ s.libelle }}</td>
+                                <td>{{ s.frais | number_format(0, '.', '.') }}</td>
+                                <td>{{ s.prix | number_format(0, '.', '.') }}</td>
+                                <td class="text-center text-danger">
+                                    <span onclick="location='{{ path('admin_services_edit', {id: s.id}) }}'" class="fa fa-edit" style="cursor:pointer;" title="Modifier"></span>
+                                </td>
+                            </tr>
+                        {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts %}
+    <!-- Required datatable js -->
+    <script src="{{ asset('zinzer/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <!-- Buttons examples -->
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/jszip.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.colVis.min.js') }}"></script>
+    <!-- Responsive examples -->
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#listeServices').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "columnDefs": [
+                    {"orderable": false, "targets": 3}
+                ],
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "lengthMenu": "Afficher _MENU_ lignes par page",
+                    "zeroRecords": "Aucun service trouvé",
+                    "info": "_PAGE_ / _PAGES_",
+                    "infoEmpty": "Pas de lignes à afficher",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "paginate": {
+                        "previous": "Précédent",
+                        "next":"Suivant"
+                    },
+                    "search": "Rechercher "
+                }
+            });
+        })
+    </script>
+{% endblock %}

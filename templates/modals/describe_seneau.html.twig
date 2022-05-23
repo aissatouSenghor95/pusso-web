@@ -1,0 +1,54 @@
+<div class="modal fade" id="describeSeneau" tabindex="-1" role="dialog" aria-labelledby="describeSeneauLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-fluid modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <p class="heading lead">Services Sen'Eau</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <!--<object class="PDFdoc" width="100%" height="500px" type="application/pdf" data="{{ asset('files/services/Demande_de_branchement_SDE.pdf') }}"></object>-->
+                {% if( senEauServices is defined) %}
+                    <div id="accordion">
+                    {% for s in senEauServices %}
+                            <div class="card mb-0">
+                                <div class="card-header" id="heading{{ s.id }}">
+                                    <h5 class="mb-0 mt-0 font-14">
+                                        <a data-toggle="collapse" data-parent="#accordion"
+                                           href="#collapse{{ s.id }}" aria-expanded="true"
+                                           aria-controls="collapse{{ s.id }}" class="text-dark">
+                                            {{s.libelle}}
+                                        </a>
+                                    </h5>
+                                </div>
+
+                                <div id="collapse{{ s.id }}" class="collapse"
+                                     aria-labelledby="heading{{ s.id }}" data-parent="#accordion">
+                                    <div class="card-body">
+                                        {{ s.description | raw }}
+                                        <p class="text-center mt-2">
+                                            <a type="button" href="{{ path('app_demande_' ~ s.type , {'tag': s.tag }) }}" class="btn btn-pusso-primary">Faire une demande<i class="fas fa-plus-circle ml-1 text-white"></i></a>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" target="_blank" href="{{ asset('files/services/Demande_de_branchement_SDE.pdf') }}" class="btn btn-info" download>Fiche de renseignements<i class="far fa-file-pdf ml-1 text-white"></i></a>
+                <a type="button" class="btn btn-outline-info waves-effect" data-dismiss="modal">Fermer <i class="fas fa-times ml-1"></i></a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>

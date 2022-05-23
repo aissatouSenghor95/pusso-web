@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        {% include 'common/headmeta-favicon.html.twig' %}
+        {% block stylesheets %}{% endblock %}
+        {% include 'common/stylesheets.html.twig' %}
+
+    </head>
+    <body class="fixed-left">
+        {% include 'common/preloader.html.twig' %}
+
+        <div id="wrapper">
+            {% include 'common/sidebar.html.twig' %}
+            <div class="content-page">
+                <div class="content">
+                    {% include 'common/navbar.html.twig' %}
+                    <div class="page-content-wrapper ">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="page-title-box">
+                                        <div class="row align-items-center">
+                                            <div class="col-md-8">
+                                                <h4 class="page-title m-0" style="color: #BF8520">{{ page_title ?? 'Tableau de bord' }} {% block pageSubTitle %}{% endblock %}</h4>
+                                            </div>
+                                            {#<div class="col-md-4">
+                                                <div class="float-right d-none d-md-block">
+                                                    <div class="dropdown">
+                                                        <button class="btn btn-default dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                            <i class="ti-settings mr-1"></i> Settings
+                                                        </button>
+                                                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated">
+                                                            <a class="dropdown-item" href="#">Action</a>
+                                                            <a class="dropdown-item" href="#">Another action</a>
+                                                            <a class="dropdown-item" href="#">Something else here</a>
+                                                            <div class="dropdown-divider"></div>
+                                                            <a class="dropdown-item" href="#">Separated link</a>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>#}
+                                            <!-- end col -->
+                                        </div>
+                                        <!-- end row -->
+                                    </div>
+                                    <!-- end page-title-box -->
+                                </div>
+                            </div>
+
+                            {% block body %}{% endblock %}
+                            {% include 'common/footer.html.twig' %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+        <!-- jQuery  -->
+        <script src="{{ asset('zinzer/vertical/assets/js/jquery.min.js') }}"></script>
+        <script src="{{ asset('zinzer/vertical/assets/js/bootstrap.bundle.min.js') }}"></script>
+        <script src="{{ asset('zinzer/vertical/assets/js/modernizr.min.js') }}"></script>
+        <script src="{{ asset('zinzer/vertical/assets/js/detect.js') }}"></script>
+        <script src="{{ asset('zinzer/vertical/assets/js/fastclick.js') }}"></script>
+        <script src="{{ asset('zinzer/vertical/assets/js/jquery.slimscroll.js') }}"></script>
+        <script src="{{ asset('zinzer/vertical/assets/js/jquery.blockUI.js') }}"></script>
+        <script src="{{ asset('zinzer/vertical/assets/js/waves.js') }}"></script>
+        <script src="{{ asset('zinzer/vertical/assets/js/jquery.nicescroll.js') }}"></script>
+        <script src="{{ asset('zinzer/vertical/assets/js/jquery.scrollTo.min.js') }}"></script>
+
+        <!-- dashboard js -->
+        <!--<script src="{{ asset('zinzer/vertical/assets/pages/dashboard.int.js') }}"></script>-->
+
+        {% block javascripts %}{% endblock %}
+        <!-- App js -->
+        <script src="{{ asset('zinzer/vertical/assets/js/app.js') }}"></script>
+        <script>
+            window.addEventListener("load", function(){
+                $.ajax({
+                    type: 'GET',
+                    url: '{{ path('ajax_organisms_get') }}',
+                    success: function (response) {
+                        let html = '' ;
+                        response.data.forEach(organisme => {
+                            html += '<li><a style="color: white" href="'+'/services/'+organisme.id+'">'+organisme.nom+'</a></li>' + '\n' ;
+                        });
+                        document.getElementById("services").innerHTML = html;
+                    },
+                    error: function () {
+                    }
+                })
+            });
+        </script>
+        {% block bowser %}{% endblock %}
+    </body>
+</html>

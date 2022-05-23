@@ -1,0 +1,97 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    {{ parent() }} - Mes paiements
+{% endblock %}
+
+{% block stylesheets %}
+    <!-- DataTables -->
+    <link href="{{ asset('zinzer/plugins/datatables/dataTables.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+    <link href="{{ asset('zinzer/plugins/datatables/buttons.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+
+    <!-- Responsive datatable examples -->
+    <link href="{{ asset('zinzer/plugins/datatables/responsive.bootstrap4.min.css') }}" rel="stylesheet" type="text/css" />
+{% endblock %}
+
+{% block body %}
+    {% if is_granted('ROLE_CLIENT') %}
+        <div class="row">
+            <div class="col-12">
+                <div class="card m-b-30">
+                    <div class="card-body">
+                        <h4 class="card-title">Mes paiements</h4>
+                        <hr>
+                        <table id="listePaiements" class="table table-bordered dt-responsive nowrap" style="border-collapse: collapse; border-spacing: 0; width: 100%;">
+                            <thead>
+                            <tr>
+                                <th>Demande</th>
+                                <th>Date de paiement</th>
+                                <th>Moyen de paiement</th>
+                                <th>Numéro Tel.</th>
+                                <th>Montant</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for d in paiements %}
+                                <tr  style="cursor: pointer" title="{{ d.statut.libelle | trans}}" class="{% if d.statut.id == 1 %} table-secondary {% elseif d.statut.id == 2 %} table-warning {% elseif d.statut.id == 3 %} table-success {% else %} table-danger {% endif %}">
+                                    <td class="text-bold" onclick="document.location='{{ path('app_demande_view', {id: d.demande.id}) }}'"><b>#{{ d.demande.reference ?? d.demande.id }}</b></td>
+                                    <td>{{ d.createdAt | date('d/m/Y H:i:s') }}</td>
+                                    <td>{{ d.type.libelle }}</td>
+                                    <td>{{ d.numero }}</td>
+                                    <td>{{ d.montant }}</td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block javascripts %}
+    <!-- Required datatable js -->
+    <script src="{{ asset('zinzer/plugins/datatables/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.bootstrap4.min.js') }}"></script>
+    <!-- Buttons examples -->
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.buttons.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.bootstrap4.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/jszip.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/pdfmake.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/vfs_fonts.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.html5.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.print.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/buttons.colVis.min.js') }}"></script>
+    <!-- Responsive examples -->
+    <script src="{{ asset('zinzer/plugins/datatables/dataTables.responsive.min.js') }}"></script>
+    <script src="{{ asset('zinzer/plugins/datatables/responsive.bootstrap4.min.js') }}"></script>
+
+    <script>
+        $(document).ready(function() {
+            $('#listePaiements').DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "lengthMenu": "_MENU_ lignes par page",
+                    "zeroRecords": "Aucun paiement en succès",
+                    "info": "_PAGE_ / _PAGES_",
+                    "infoEmpty": "Pas de lignes à afficher",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "paginate": {
+                        "previous": "Précédent",
+                        "next":"Suivant"
+                    },
+                    "search": ""
+                }
+            });
+            $('input[type=search]').attr('placeholder','Rechercher');
+        });
+    </script>
+{% endblock %}

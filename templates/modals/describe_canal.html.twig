@@ -1,0 +1,52 @@
+<div class="modal fade" id="describeCanal" tabindex="-1" role="dialog" aria-labelledby="describeCanalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-fluid modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <p class="heading lead">Services Canal+</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                {% if( canalServices is defined) %}
+                    <div id="accordion">
+                    {% for s in canalServices %}
+                        <div class="card mb-0">
+                            <div class="card-header" id="heading{{ s.id }}">
+                                <h5 class="mb-0 mt-0 font-14">
+                                    <a data-toggle="collapse" data-parent="#accordion"
+                                       href="#collapse{{ s.id }}" aria-expanded="true"
+                                       aria-controls="collapse{{ s.id }}" class="text-dark">
+                                        {{s.libelle}}
+                                    </a>
+                                </h5>
+                            </div>
+
+                            <div id="collapse{{ s.id }}" class="collapse"
+                                 aria-labelledby="heading{{ s.id }}" data-parent="#accordion">
+                                <div class="card-body">
+                                    {{ s.description | raw }}
+                                    <p class="text-center mt-2">
+                                        <a type="button" href="{{ path('app_demande_' ~ s.type , {'tag': s.tag }) }}" class="btn btn-pusso-primary">Faire une demande<i class="fas fa-plus-circle ml-1 text-white"></i></a>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" class="btn btn-outline-info waves-effect" data-dismiss="modal">Fermer <i class="fas fa-window-close ml-1"></i></a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>

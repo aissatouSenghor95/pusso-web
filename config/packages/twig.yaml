@@ -1,0 +1,10 @@
+twig:
+    default_path: '%kernel.project_dir%/templates'
+    form_themes: ['bootstrap_4_horizontal_layout.html.twig']
+    globals:
+        app_name: 'PUSSO'
+        woyofal_pdf: 'https://www.crse.sn/sites/default/files/2017-04/DemandeAbonnementBT.pdf'
+        canal_url: 'https://www.canalplus-afrique.com/sn/offres-tv'
+        orange_url: 'https://www.orange.sn/internet-adsl-fibre/new-fibre'
+        onas_url: 'https://www.onas.sn/service-clients/demande-de-branchement-a-legout'
+        seneau_pdf: 'http://www.sde.sn/Tlchargements/Demande_de_branchement_SDE.pdf'

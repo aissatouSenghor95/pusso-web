@@ -1,0 +1,28 @@
+<div class="modal fade" id="describeWoyofal" tabindex="-1" role="dialog" aria-labelledby="describeWoyofalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog modal-fluid modal-notify modal-info" role="document">
+        <!--Content-->
+        <div class="modal-content">
+            <!--Header-->
+            <div class="modal-header">
+                <p class="heading lead">Services Woyofal</p>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true" class="white-text">&times;</span>
+                </button>
+            </div>
+
+            <!--Body-->
+            <div class="modal-body">
+                <object class="PDFdoc" width="100%" height="450px" type="application/pdf" data="{{ woyofal_pdf }}"></object>
+            </div>
+
+            <!--Footer-->
+            <div class="modal-footer justify-content-center">
+                <a type="button" href="{{ path('app_demande_add', {'organisme': 'WOYOFAL'}) }}" class="btn btn-pusso-primary">Faire une demande<i class="fas fa-plus-circle ml-1 text-white"></i></a>
+                <a type="button" target="_blank" href="{{ asset('files/services/DemandeAbonnementWoyofal.pdf') }}" download="woyofal_fiche_de_renseignements.pdf" class="btn btn-info">Télécharger<i class="far fa-file-pdf ml-1 text-white"></i></a>
+                <a type="button" class="btn btn-outline-info waves-effect" data-dismiss="modal">Fermer <i class="fas fa-times ml-1"></i></a>
+            </div>
+        </div>
+        <!--/.Content-->
+    </div>
+</div>

@@ -1,0 +1,141 @@
+{% extends 'base-in.html.twig' %}
+
+{% block titre %}
+    {{ parent() }} - {{ level2 }}
+{% endblock %}
+
+{% block stylesheet %}
+    <!-- DataTables -->
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css') }}">
+    <link rel="stylesheet" href="{{ asset('adminlte/plugins/datatables-responsive/css/responsive.bootstrap4.min.css') }}">
+{% endblock %}
+
+{% block  body %}
+    <!-- Content Wrapper. Contains page content -->
+    <div class="content-wrapper">
+
+        {{ include('header.html.twig', {sectionTitle: level1}) }}
+
+        <!-- Main content -->
+        <section class="content">
+
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('warning') %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            <div class="row">
+                <div class="col-12">
+                    <div class="card">
+                        <div class="card-header">
+                            <h3 class="card-title">{{ level2 }}</h3>
+                        </div>
+                        <!-- /.card-header -->
+                        <div class="card-body">
+                            <table id="listeClients" class="table table-bordered table-striped">
+                                <thead>
+                                <tr>
+                                    <th>#</th>
+                                    <th>Nom</th>
+                                    <th>Prénom</th>
+                                    <th>Raison Sociale</th>
+                                    <th>Email</th>
+                                    <th>Date d'inscription</th>
+                                    <th colspan="2" class="text-center">Actions</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+
+                                {% for user in clients %}
+                                        <tr class="{% if not user.isActive %} table-warning {% endif %}">
+                                            <td>{{ user.id }}</td>
+                                            <td>{{ user.nom }}</td>
+                                            <td>{{ user.prenom }}</td>
+                                            <td>{{ user.raisonSociale }}</td>
+                                            <td>{{ user.login }}</td>
+                                            <td>{{ user.createdAt | date("m/d/Y H:i:s") }}</td>
+                                            <td class="text-center">
+                                                <a class="text-primary" title="modifier" href="" style="cursor: pointer"><i class="fas fa-edit"></i></a>
+                                            </td>
+                                            <td class="text-center">
+                                                <span class="{% if user.isActive %} text-success {% else %} text-danger {% endif %}"
+                                                      title="{% if user.isActive %} Bloquer {% else %} Débloquer {% endif %}"
+                                                      data-toggle="modal"
+                                                      data-target="#modal-access-{{ user.id }}" style="cursor: pointer">
+                                                    <i class="fa {% if not user.isActive %} fa-toggle-on {% else %} fa-toggle-off {% endif %}"></i>
+                                                </span>
+                                            </td>
+                                        </tr>
+                                {% endfor %}
+                                </tfoot>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            {% for user in users %}
+                {{ include('modals/user_access.html.twig', {objet: user}) }}
+            {% endfor %}
+        </section>
+
+    </div>
+{% endblock %}
+
+{% block dataTables %}
+    {% include 'js-datatable-common.html.twig' %}
+{% endblock %}
+
+{% block scripts %}
+    <script>
+        $(function () {
+            $("#listeClients").DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "columnDefs": [
+                    {"orderable": false, "targets": 7}
+                ],
+                "info": true,
+                "autoWidth": false,
+                "responsive": true,
+                "language": {
+                    "lengthMenu": "Afficher _MENU_ lignes par page",
+                    "zeroRecords": "La liste des clients est vide.",
+                    "info": "_PAGE_ / _PAGES_",
+                    "infoEmpty": "Pas de lignes à afficher",
+                    "infoFiltered": "(filtered from _MAX_ total records)",
+                    "paginate": {
+                        "previous": "Précédent",
+                        "next":"Suivant"
+                    },
+                    "search": "Rechercher un client : "
+                }
+            });
+        });
+    </script>
+
+{% endblock %}

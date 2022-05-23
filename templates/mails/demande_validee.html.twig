@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>[PUSSO] Demande validée</title>
+</head>
+<body>
+<p>
+    Bonjour, <br><br>
+    {% if demande.statut.id == 2 %}
+        Votre demande est en cours d'étude.<br><br>
+        Vous recevrez prochainement une notification à l'issue de cette étude.<br><br>
+    {% elseif demande.statut.id == 3 %}
+        Votre demande a été étudiée et validée. <br><br>
+        Vous pouvez à présent procéder au paiement en vous connectant sur votre espace personnel.<br><br>
+    {% endif %}
+    Toute l'équipe de <b>Pusso</b> vous remercie pour votre confiance.<br><br><br>
+Cordialement,<br>
+Pusso
+</p>
+</body>
+</html>

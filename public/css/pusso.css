@@ -1,0 +1,109 @@
+.btn-pusso-primary {
+    color: #ffffff;
+    background-color: #BF8520;
+    border-color: #8c5c1b;
+}
+
+.btn-pusso-primary:hover,
+.btn-pusso-primary:focus,
+.btn-pusso-primary:active,
+.btn-pusso-primary.active,
+.open .dropdown-toggle.btn-pusso-primary {
+    color: #ffffff;
+    background-color: #725017;
+    border-color: #8c5c1b;
+}
+
+.btn-pusso-primary:active,
+.btn-pusso-primary.active,
+.open .dropdown-toggle.btn-pusso-primary {
+    background-image: none;
+}
+
+.btn-pusso-primary.disabled,
+.btn-pusso-primary[disabled],
+fieldset[disabled] .btn-pusso-primary,
+.btn-pusso-primary.disabled:hover,
+.btn-pusso-primary[disabled]:hover,
+fieldset[disabled] .btn-pusso-primary:hover,
+.btn-pusso-primary.disabled:focus,
+.btn-pusso-primary[disabled]:focus,
+fieldset[disabled] .btn-pusso-primary:focus,
+.btn-pusso-primary.disabled:active,
+.btn-pusso-primary[disabled]:active,
+fieldset[disabled] .btn-pusso-primary:active,
+.btn-pusso-primary.disabled.active,
+.btn-pusso-primary[disabled].active,
+fieldset[disabled] .btn-pusso-primary.active {
+    background-color: #BF8520;
+    border-color: #8c5c1b;
+}
+
+.btn-pusso-primary .badge {
+    color: #BF8520;
+    background-color: #ffffff;
+}
+
+.text-pusso-primary {
+    color: #BF8520 ;
+}
+/*
+kkkk
+ */
+.tr{
+    cursor: pointer;
+}
+
+.custom-file-label::after {
+    content: "Charger une image";
+}
+
+@media screen and (max-width: 600px) {
+    .mob-selection {
+        display: none;
+    }
+    .pusso-img-mob{
+        height: 50px;
+    }
+}
+
+.pusso-dashboard-card{
+    cursor: pointer !important;
+}
+
+.pusso-dashboard-card:hover{
+    background: #BF8520 !important;
+    color: wheat !important;
+}
+
+.back{
+    background-image: url('/images/bg.jpg') !important;
+    /* Background image is centered vertically and horizontally at all times */
+    background-position: center center;
+
+    /* Background image doesn’t tile */
+    background-repeat: no-repeat;
+
+    /* Background image is fixed in the viewport so that it doesn’t move when
+    the content’s height is greater than the image’s height */
+    background-attachment: fixed;
+
+    /* This is what makes the background image rescale based
+    on the container’s size */
+    background-size: cover;
+}
+
+.only-web{
+    display: block;
+}
+
+@media screen and (max-width: 480px) {
+    .back{
+        background: white !important;
+        background-color: white !important;
+    }
+    .only-web{
+        visibility: hidden;
+        display: none;
+    }
+}

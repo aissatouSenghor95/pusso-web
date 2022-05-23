@@ -1,0 +1,184 @@
+app_homepage:
+  path: /
+  controller: App\Controller\HomeController::index
+
+login_check:
+  path: /login_check
+
+logout:
+  path: /logout
+
+app_csu_all:
+  path: /csu/
+  controller: App\Controller\UtilisateurController::customerServiceUsers
+
+app_csu_add:
+  path: /csu/add
+  controller: App\Controller\UtilisateurController::customerServiceUsersAdd
+
+app_partner_all:
+  path: /partenaires/
+  controller: App\Controller\UtilisateurController::partnerUsers
+
+app_partner_add:
+  path: /partenaires/add
+  controller: App\Controller\UtilisateurController::partnerUsersAdd
+
+app_admin_all:
+  path: /admins/
+  controller: App\Controller\UtilisateurController::adminUsers
+
+app_admin_add:
+  path: /admins/add
+  controller: App\Controller\UtilisateurController::adminUsersAdd
+
+app_user_edit:
+  path: /users/soppi/{id}
+  controller: App\Controller\UtilisateurController::edit
+  requirements:
+    id: \d+
+
+app_user_access:
+  path: /users/access/{id}
+  controller: App\Controller\UtilisateurController::access
+  requirements:
+    id: \d+
+
+app_user_profil:
+  path: /profil
+  controller: App\Controller\ProfilController::profil
+
+app_demande_my_requests:
+  path: /demandes/mes-demandes
+  controller: App\Controller\DemandeController::mesDemandes
+
+app_demande_all:
+  path: /demandes/
+  controller: App\Controller\DemandeController::all
+
+app_demande_en_etude:
+  path: /demandes/en-etude
+  controller: App\Controller\DemandeController::enEtude
+
+app_demande_add:
+  path: /demandes/create/{organisme}
+  defaults:  { _controller: App\Controller\DemandeController::add, organisme: SENELEC }
+
+app_demande_edit:
+  path: /demandes/edit/{id}
+  controller: App\Controller\DemandeController::edit
+  requirements:
+    id: \d+
+
+app_demande_view:
+  path: /demandes/view/{id}
+  controller: App\Controller\DemandeController::view
+  requirements:
+    id: \d+
+
+app_demande_validate:
+  path: /demandes/validate/{id}
+  controller: App\Controller\DemandeController::validate
+  requirements:
+    id: \d+
+
+app_demande_validate_ajax:
+  path: /demandes/validate/ajax
+  controller: App\Controller\DemandeController::ajaxValidation
+
+app_demande_reject:
+  path: /demandes/reject/{id}
+  controller: App\Controller\DemandeController::reject
+  requirements:
+    id: \d+
+
+app_demande_en_paiement:
+  path: /demandes/attente-paiement
+  controller: App\Controller\DemandeController::attentePaiement
+
+app_demande_validees:
+  path: /demandes/validees
+  controller: App\Controller\DemandeController::validees
+
+app_demande_rejetees:
+  path: /demandes/rejetees
+  controller: App\Controller\DemandeController::rejetees
+
+app_payment_wallet_confirm:
+  path: /payments/wallets/{id}/{token}/confirm
+  controller: App\Controller\PaiementController::confirm
+  requirements:
+    id: \d+
+
+app_my_payments:
+  path: /mes-paiements
+  controller: App\Controller\PaiementController::myPayments
+
+app_demande_branchement:
+  path: /demandes/branchement/{tag}
+  controller: App\Controller\PrettyDemandeController::branchement
+
+app_demande_changement:
+  path: /demandes/changement/{tag}
+  controller: App\Controller\PrettyDemandeController::changement
+
+
+app_demande_abonnement:
+  path: /demandes/abonnement/{tag}
+  controller: App\Controller\PrettyDemandeController::abonnement
+
+app_demande_abonnement-mutation:
+  path: /demandes/abonnement-mutation/{tag}
+  controller: App\Controller\PrettyDemandeController::abonnementMutation
+
+
+app_demande_choose:
+  path: /demandes/nouvelle-demande
+  controller: App\Controller\PrettyDemandeController::choose
+
+app_demande_resiliation:
+  path: /demandes/resiliation/{tag}
+  controller: App\Controller\PrettyDemandeController::resiliation
+
+app_demande_depannage:
+  path: /demandes/depannage/{tag}
+  controller: App\Controller\PrettyDemandeController::depannage
+
+app_demande_transfert:
+  path: /demandes/transfert/{tag}
+  controller: App\Controller\PrettyDemandeController::transfert
+
+app_demande_domicile:
+  path: /demandes/domicile/{tag}
+  controller: App\Controller\PrettyDemandeController::domicile
+
+app_demande_residence:
+  path: /demandes/residence/{tag}
+  controller: App\Controller\PrettyDemandeController::residence
+
+app_demande_enregistrement:
+  path: /demandes/enregistrement/{tag}
+  controller: App\Controller\PrettyDemandeController::enregistrement
+
+app_demande_autorisation:
+  path: /demandes/autorisation/{tag}
+  controller: App\Controller\PrettyDemandeController::autorisation
+
+app_demande_pdf:
+  path: /demandes/{id}/pdf
+  controller: App\Controller\PrettyDemandeController::getPdf
+  requirements:
+    id: \d+
+
+app_service_all:
+  path: /services
+  controller: App\Controller\ServicesController::index
+
+app_service_org:
+  path: /services/{org}
+  controller: App\Controller\ServicesController::detail
+  requirements:
+    org: \d+
+
+
+

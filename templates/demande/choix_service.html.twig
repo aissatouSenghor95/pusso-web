@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    {{ parent() }} - Choix de service
+{% endblock %}
+
+{% block body %}
+    <div class="card">
+        <div class="card-body mb-3">
+            <h4 class="mt-0 header-title text-pusso-primary">Nos partenaires</h4>
+            <hr>
+            <div class="row ml-1 mr-1" >
+                {% for o in organismes %}
+                    <img class="col-xl-2 col-sm-4 img-fluid" style="cursor: pointer" data-toggle="modal" data-target="#describe{{ o.id }}" src="{{ asset('images/' ~ o.logo) }}"/>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
+    {% for o in organismes %}
+        {{ include('modals/describe_organisme.html.twig', {org: o}) }}
+    {% endfor %}
+
+{% endblock %}

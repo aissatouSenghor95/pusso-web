@@ -1,0 +1,45 @@
+<div class="modal fade" id="modal-comments-{{ object.id }}">
+    <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+        <div class="modal-content bg-light">
+            <div class="modal-header">
+                <h4 class="modal-title text-pusso-primary">Commentaires</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-xl-12">
+                    <div class="card">
+                        <div class="card-body">
+                            <div class="latest-massage">
+                                {% for c in object.commentaires %}
+                                    <a href="#" class="latest-message-list">
+                                        <div class="border-bottom position-relative">
+                                            <div class="float-left user mr-3">
+                                                <h5 class="bg-primary text-center rounded-circle text-white mt-0">{{ c.auteur.prenom[:1] }}</h5>
+                                            </div>
+                                            <div class="message-time">
+                                                <p class="m-0 text-muted">{{ c.createdAt | date('d/m/Y H:i:s') }}</p>
+                                            </div>
+                                            <div class="massage-desc">
+                                                <h5 class="font-14 mt-0 text-dark">{{ c.auteur.prenom }} {{ c.auteur.nom }}</h5>
+                                                <p class="text-muted {% if c.type.id == 1 %} text-danger {% endif %}">{{c.corps}}</p>
+                                            </div>
+                                        </div>
+                                    </a>
+                                {% else %}
+                                    <p class="text-center">Pas de commentaire</p>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

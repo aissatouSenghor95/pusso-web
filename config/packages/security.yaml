@@ -1,0 +1,85 @@
+security:
+    encoders:
+        App\Entity\Utilisateur:
+            algorithm: sha1
+            encode_as_base64: false
+            iterations: 1
+
+    role_hierarchy:
+        ROLE_CLIENT: ROLE_USER
+        ROLE_PARTENAIRE: ROLE_USER
+        ROLE_CUSTOMER_SERVICE: ROLE_USER
+        ROLE_ADMIN: ROLE_USER
+        ROLE_SUPER_ADMIN: ROLE_ADMIN
+
+    providers:
+        hlx_pusso_db:
+            entity:
+                class: App\Entity\Utilisateur
+                property: username
+    firewalls:
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js|files)/
+            security: false
+
+        main_login:
+            pattern: ^/login$
+            anonymous: true
+
+        main_forget:
+            pattern: ^/recovery$
+            anonymous: true
+
+        main_resetting:
+            pattern: ^/resetting
+            anonymous: true
+
+        main_register:
+            pattern: ^/register$
+            anonymous: true
+
+        main_guest:
+            pattern: ^/guest
+            anonymous: true
+
+        main_confirm_payment:
+            pattern: ^/payments/wallets
+            anonymous: true
+
+        main:
+            pattern: ^/
+            anonymous: false
+            user_checker: App\Security\UserChecker
+            provider: hlx_pusso_db
+            form_login:
+                login_path: login
+                check_path: login_check
+                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path: logout
+                target: /login
+
+
+            # activate different ways to authenticate
+            # https://symfony.com/doc/current/security.html#firewalls-authentication
+
+            # https://symfony.com/doc/current/security/impersonating_user.html
+            # switch_user: true
+
+    # Easy way to control access for large sections of your site
+    # Note: Only the *first* access control that matches will be used
+    access_control:
+        - { path: ^/guest, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/resetting, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/payments/wallets, roles: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/profil, roles: ROLE_USER }
+        - { path: ^/logout, roles: ROLE_USER }
+        - { path: ^/mes-paiements$, roles: ROLE_CLIENT}
+        - { path: ^/ajax/payment, roles: ROLE_CLIENT}
+        - { path: ^/demandes/create, roles: ROLE_CLIENT}
+        - { path: ^/demandes/remove, roles: ROLE_CLIENT}
+        - { path: ^/demandes/edit, roles: ROLE_CLIENT}
+        - { path: ^/demandes, roles: ROLE_USER}
+        - { path: ^/users, roles: ROLE_ADMIN }
+        - { path: ^/compta, roles: ROLE_ADMIN }
+        - { path: ^/admin, roles: ROLE_SUPER_ADMIN }

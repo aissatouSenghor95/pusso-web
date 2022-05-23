@@ -1,0 +1,68 @@
+<!-- Top Bar Start -->
+<div class="topbar">
+
+    <div class="topbar-left	d-none d-lg-block">
+        <div class="text-center">
+            <a href="{{ path('app_homepage') }}" class="logo"><img src="{{ asset('images/logo_pusso_bg.png') }}" height="70" alt="logo"></a>
+        </div>
+    </div>
+
+    <nav class="navbar-custom" style="background:white">
+        <!-- Search input -->
+        <div class="search-wrap" id="search-wrap">
+            <div class="search-bar">
+                <input class="search-input" type="search" placeholder="Search" />
+                <a href="#" class="close-search toggle-search" data-target="#search-wrap">
+                    <i class="mdi mdi-close-circle"></i>
+                </a>
+            </div>
+        </div>
+
+        <ul class="list-inline float-right mb-0">
+            <li class="list-inline-item dropdown notification-list">
+                <a class="nav-link waves-effect toggle-search" href="#"  data-target="#search-wrap">
+                    <i class="mdi mdi-magnify noti-icon"></i>
+                </a>
+            </li>
+
+            {% if is_granted('ROLE_USER') %}
+                <li class="list-inline-item dropdown notification-list nav-user">
+                    <a class="nav-link dropdown-toggle arrow-none waves-effect text-pusso-primary" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="false" aria-expanded="false">
+                            <img src="{{ asset('images/user.png') }}" alt="user" class="rounded-circle">
+                            <span class="d-none d-md-inline-block ml-1  text-pusso-primary">{{ app.user.prenom }}<i class="mdi mdi-chevron-down"></i> </span>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-right dropdown-menu-animated profile-dropdown">
+                        <a class="dropdown-item text-pusso-primary" href="{{ path('app_user_profil') }}"><i class="dripicons-user"></i> Mon profil</a>
+                        {% if is_granted('ROLE_CLIENT') %}
+                            <a class="dropdown-item text-pusso-primary" href="{{ path('app_demande_my_requests') }}"><i class="dripicons-wallet"></i> Mes demandes</a>
+                        {% endif %}
+                        <div class="dropdown-divider"></div>
+                        <a class="dropdown-item text-pusso-primary" href="{{ path('logout') }}"><i class="dripicons-exit"></i> Se déconnecter</a>
+                    </div>
+                </li>
+            {% endif %}
+        </ul>
+
+        <ul class="list-inline menu-left mb-0">
+            <li class="list-inline-item">
+                <button type="button" class="button-menu-mobile open-left waves-effect" style="background: white">
+                    <i class="mdi mdi-menu" style="color:#BF8520;"></i>
+                </button>
+            </li>
+            {% if is_granted('ROLE_CLIENT') %}
+                {#<li class="list-inline-item dropdown notification-list d-none d-sm-inline-block">
+                    <a style="color: #BF8520" class="nav-link dropdown-toggle arrow-none waves-effect text-pusso-primary" data-toggle="dropdown" href="#" role="button"
+                       aria-haspopup="false" aria-expanded="false">
+                        Créer <i class="mdi mdi-plus"></i>
+                    </a>
+                    <div class="dropdown-menu dropdown-menu-animated">
+                        <a class="dropdown-item" href="{{ path('app_demande_choose') }}">Nouvelle demande</a>
+                    </div>
+                </li>#}
+            {% endif %}
+
+        </ul>
+    </nav>
+</div>
+<!-- Top Bar End -->

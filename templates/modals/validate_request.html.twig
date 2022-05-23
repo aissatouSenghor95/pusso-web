@@ -1,0 +1,28 @@
+<div class="modal fade" id="modal-validate-{{ objet.id }}">
+    <div class="modal-dialog">
+        <div class="modal-content bg-light">
+            <div class="modal-header">
+                <h4 class="modal-title text-pusso-primary">Validation d'une demande</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-primary">Vous êtes sur le point de valider la demande.</p>
+                <p class="text-primary">
+                    {% if is_granted('ROLE_CUSTOMER_SERVICE') %}
+                        Elle passera en validation auprès du partenaire concerné.
+                    {% elseif is_granted('ROLE_PARTENAIRE') %}
+                        La demande passera en attente de paiement auprès du client.
+                    {% endif %}
+                </p>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                <a class="btn btn-pusso-primary" href="{{ path('app_demande_validate', { 'id': objet.id }) }}">Confirmer</a>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

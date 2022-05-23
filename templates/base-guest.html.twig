@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {% include 'common/headmeta-favicon.html.twig' %}
+    {% block stylesheets %}{% endblock %}
+    {% include 'common/stylesheets.html.twig' %}
+
+</head>
+<body class="fixed-left">
+{% include 'common/preloader.html.twig' %}
+
+<div id="wrapper">
+        <div class="content">
+            {% block body %}{% endblock %}
+        </div>
+</div>
+<!-- jQuery  -->
+<script src="{{ asset('zinzer/vertical/assets/js/jquery.min.js') }}"></script>
+<script src="{{ asset('zinzer/vertical/assets/js/bootstrap.bundle.min.js') }}"></script>
+<script src="{{ asset('zinzer/vertical/assets/js/modernizr.min.js') }}"></script>
+<script src="{{ asset('zinzer/vertical/assets/js/detect.js') }}"></script>
+<script src="{{ asset('zinzer/vertical/assets/js/fastclick.js') }}"></script>
+<script src="{{ asset('zinzer/vertical/assets/js/jquery.slimscroll.js') }}"></script>
+<script src="{{ asset('zinzer/vertical/assets/js/jquery.blockUI.js') }}"></script>
+<script src="{{ asset('zinzer/vertical/assets/js/waves.js') }}"></script>
+<script src="{{ asset('zinzer/vertical/assets/js/jquery.nicescroll.js') }}"></script>
+<script src="{{ asset('zinzer/vertical/assets/js/jquery.scrollTo.min.js') }}"></script>
+
+<!-- dashboard js -->
+<!--<script src="{{ asset('zinzer/vertical/assets/pages/dashboard.int.js') }}"></script>-->
+
+{% block javascripts %}{% endblock %}
+<!-- App js -->
+<script src="{{ asset('zinzer/vertical/assets/js/app.js') }}"></script>
+{% block bowser %}{% endblock %}
+</body>
+</html>

@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %} {{ parent() }} - Créer une demande {% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block body %}
+    <style>
+        .custom-file-label::after {
+            content: "Charger une image";
+        }
+    </style>
+<div class="row">
+    <div class="col-12">
+        <div class="card m-b-30">
+            <div class="card-body">
+                <div class="col-12 text-center">
+                    <p><img class="col-xl-2" id="selected-img" src="{{ asset('images/logo-canal.png') }}" alt="logo"></p>
+                </div>
+                {% if not creationOK %}
+                    {{ form_start(form,{'attr' : {'class' : 'form-horizontal m-t-15', 'onsubmit':'showLoadingButton()'}}) }}
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Organisme</label>
+                        <div class="col-sm-9">
+                            {{ form_widget(form.organisme,{'attr':{'class':'form-control','placeholder':'Organisme', 'onChange':'updateImg(this)'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.organisme) }}</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Service</label>
+                        <div class="col-sm-9">
+                            {{ form_widget(form.service,{'attr':{'class':'form-control','placeholder':'Service'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.service) }}</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Personne à contacter</label>
+                        <div class="col-sm-9">
+                            {{ form_widget(form.contact,{'attr':{'class':'form-control','placeholder':'A contacter'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.contact) }}</div>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-3 col-form-label">Pièce d'identité</label>
+                        <div class="col-sm-9">
+                            {{ form_widget(form.piFile,{'attr':{'class':'form-control custom-file-input'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.piFile) }}</div>
+                        </div>
+                    </div>
+                    <div class="form-group text-center row m-t-20">
+                        <div class="col-12">
+                            <button class="btn btn-pusso-primary btn-block waves-effect waves-light" id="submit_button" type="submit">Initier ma demande</button>
+                            <button style="display: none;"  id="loading_button" class="btn btn-pusso-primary btn-block waves-effect waves-light"  type="button">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Création en cours...
+                            </button>
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                    {{ form_end(form) }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+    <script>
+        function updateImg(select){
+            var img = document.getElementById('selected-img') ;
+            if(select.options[select.selectedIndex].text === 'SEN\'EAU')
+                img.setAttribute('src', '{{ asset('images/logo-seneau.png') }}') ;
+            else if(select.options[select.selectedIndex].text === 'WOYOFAL')
+                img.setAttribute('src', '{{ asset('images/logo-woyofal.png') }}') ;
+            else if(select.options[select.selectedIndex].text === 'WAW')
+                img.setAttribute('src', '{{ asset('images/logo-waw.png') }}') ;
+            else if(select.options[select.selectedIndex].text === 'ORANGE')
+                img.setAttribute('src', '{{ asset('images/logo-orange.png') }}') ;
+            else if(select.options[select.selectedIndex].text === 'SENELEC')
+                img.setAttribute('src', '{{ asset('images/logo-senelec.png') }}') ;
+            else if(select.options[select.selectedIndex].text === 'ONAS')
+                img.setAttribute('src', '{{ asset('images/logo-onas.jpg') }}') ;
+            else if(select.options[select.selectedIndex].text === 'CANAL+')
+                img.setAttribute('src', '{{ asset('images/logo-canal.png') }}') ;
+        }
+    </script>
+    <script>
+
+    </script>
+    <script src="{{ asset('zinzer/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+    <!-- Bootstrap inputmask js -->
+    <script src="{{ asset('zinzer/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
+    <script>
+        $(function () {
+            bsCustomFileInput.init() ;
+            updateImg(document.getElementById('demande_organisme')) ;
+        })
+
+    </script>
+    <!-- Sweet-Alert  -->
+    <script src="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.min.js') }}"></script>
+    <script>
+        function showLoadingButton() {
+            document.getElementById('submit_button').style.display ='none';
+            document.getElementById('loading_button').style.display ='block';
+        }
+    </script>
+    {% if creationOK %}
+        <script>
+            swal(
+                {
+                    title: 'Bravo !',
+                    text: 'Votre demande a été créée avec succès!',
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger m-l-10'
+                }
+            ).then(function () {
+                window.location = "{{ path('app_demande_my_requests') }}"
+            })
+        </script>
+    {% endif %}
+{% endblock %}

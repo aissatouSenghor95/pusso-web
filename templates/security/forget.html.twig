@@ -1,0 +1,86 @@
+{% extends 'base-out.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Mot de passe oublié
+{% endblock %}
+
+{% block body %}
+    <div class="mr-lg-5 ml-lg-5">
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="row">
+                    <div class="col-md-8 col-sm-1">
+                    </div>
+                    <div class="col-md-4 col-sm-12">
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="card mt-lg-5">
+                                    <div class="card-body">
+                                        <div class="p-2">
+                                            <h4 class="text-muted float-right font-18 mt-5">Mot de passe oublié</h4>
+                                            <div>
+                                                <a href="{{ path('login') }}" class="logo logo-admin"><img src="{{ asset('images/logo_pusso.png') }}" height="112" alt="logo"></a>
+                                            </div>
+                                        </div>
+
+                                        <div class="p-2">
+                                            <div class="p-2">
+                                                {{ form_start(form,{'attr' : {'class' : 'form-horizontal'}}) }}
+                                                {% for message in app.session.flashbag.get('error') %}
+                                                    <div class="alert alert-danger">
+                                                        {{ message }}
+                                                    </div>
+                                                {% endfor %}
+                                                {% for message in app.session.flashbag.get('success') %}
+                                                    <div class="alert alert-success">
+                                                        {{ message }}
+                                                    </div>
+                                                {% endfor %}
+                                                <div class="form-group row">
+                                                    <div class="col-12">
+                                                        {{ form_widget(form.username,{'attr':{'class':'form-control','placeholder':'Email'}}) }}
+                                                    </div>
+                                                </div>
+                                                <div class="form-group text-center row m-t-20">
+                                                    <div class="col-12">
+                                                        <button class="btn btn-pusso-primary btn-block waves-effect waves-light" type="submit">Envoyer</button>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group m-t-10 mb-0 row">
+                                                    <div class="col-12 m-t-20 text-center">
+                                                        <a href="{{ path('login') }}" class="text-muted">Se connecter ?</a>
+                                                    </div>
+                                                </div>
+                                                {{ form_rest(form) }}
+                                                {{ form_end(form) }}
+                                                <!-- end form -->
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            {#<div class="col-12">
+                                <div class="card">
+                                    <div class="card-body">
+                                        <h4 class="card-title ml-1 text-center text-pusso-primary">Nos partenaires</h4>
+                                        <hr>
+                                        <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-senelec.png') }}"/>
+                                        <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-seneau.png') }}"/>
+                                        <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-canal.png') }}"/>
+                                        <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-woyofal.png') }}"/>
+                                        <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-orange.png') }}"/>
+                                        <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-onas.jpg') }}"/>
+                                        <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-waw.png') }}"/>
+
+                                    </div>
+                                </div>
+                            </div>#}
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- end row -->
+    </div>
+{% endblock %}

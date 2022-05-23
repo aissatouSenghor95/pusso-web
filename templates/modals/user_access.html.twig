@@ -1,0 +1,35 @@
+<div class="modal fade" id="modal-access-{{ objet.id }}">
+    <div class="modal-dialog">
+        <div class="modal-content bg-light">
+            <div class="modal-header">
+                <h4 class="modal-title" >
+                    {% if objet.isActive %} Bloquer un utilisateur
+                    {% else %} Débloquer un utilisateur
+                    {% endif %}
+                </h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                {% if objet.isActive %}
+                    <p class="text-danger">Voulez-vous vraiment bloquer l'utilisateur: {{ objet.nom }} {{ objet.prenom }} ({{ objet.username }}) ? </p>
+                {% else %}
+                    <p class="text-warning">Voulez-vous vraiment débloquer l'utilisateur: {{ objet.nom }} {{ objet.prenom }}  ({{ objet.username }}) ? </p>
+                {% endif %}
+
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Fermer</button>
+                {% if objet.isActive %}
+                    <a class="btn btn-danger" href="{{ path('app_user_access', { 'id': objet.id }) }}">Bloquer</a>
+                {% else %}
+                    <a class="btn btn-success" href="{{ path('app_user_access', { 'id': objet.id }) }}">Débloquer</a>
+                {% endif %}
+
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>

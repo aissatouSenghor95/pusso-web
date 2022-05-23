@@ -1,0 +1,101 @@
+
+{% extends 'base-out.html.twig' %}
+
+{% block title %}
+    {{ parent() }} - Connexion
+{% endblock %}
+
+{% block body %}
+    <div class="account-pages">
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-5">
+                    <div class="card mt-4 mb-4">
+                        <div class="card-body">
+                            <div class="p-2">
+                                <div class="text-center">
+                                    <a href="{{ path('login') }}" class="logo logo-admin"><img src="{{ asset('images/logo_pusso.png') }}" height="125" alt="logo"></a>
+                                </div>
+                            </div>
+
+                            <div class="p-2">
+                                {% for message in app.session.flashbag.get('error') %}
+                                    <div class="alert alert-danger">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+
+                                {% for message in app.session.flashbag.get('warning') %}
+                                    <div class="alert alert-warning">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+
+
+                                {% for message in app.session.flashbag.get('success') %}
+                                    <div class="alert alert-success">
+                                        {{ message }}
+                                    </div>
+                                {% endfor %}
+
+                                {{ form_start(form,{'attr' : {'class' : 'form-horizontal m-t-15', 'onsubmit':'showLoadingButton()'}}) }}
+
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Mot de passe</label>
+                                    <div class="col-sm-8">
+                                        {{ form_widget(form.plainPassword.first,{'attr':{'class':'form-control', 'placeholder':'Mot de passe'}}) }}
+                                        <div class="form-control-feedback">{{ form_errors(form.plainPassword.first) }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group row">
+                                    <label class="col-sm-4 col-form-label">Confirmation</label>
+                                    <div class="col-sm-8">
+                                        {{ form_widget(form.plainPassword.second,{'attr':{'class':'form-control', 'placeholder':'Confirmer votre mot de passe'}}) }}
+                                        <div class="form-control-feedback">{{ form_errors(form.plainPassword.first) }}</div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group text-center row m-t-20">
+                                        <div class="col-12">
+                                            <button class="btn btn-pusso-primary btn-block waves-effect waves-light" id="submit_button" type="submit">Modifier mon mot de passe</button>
+                                            <button style="display: none;"  id="loading_button" class="btn btn-pusso-primary btn-block waves-effect waves-light"  type="button">
+                                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                                Modification en cours...
+                                            </button>
+                                        </div>
+                                    </div>
+                                {{ form_rest(form) }}
+
+                                {{ form_end(form) }}
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+                <!--<div class="col-lg-7">
+                    <div class="card">
+                        <div class="card-body">
+                            <h4 class="card-title ml-1 text-center text-pusso-primary">Nos partenaires</h4>
+                            <hr>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-senelec.jpg') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-seneau-bis.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-canal.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-woyofal.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-orange.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-onas.png') }}"/>
+                            <img class="col-xl-2 col-md-6"   src="{{ asset('images/logo-waw.jpg') }}"/>
+                        </div>
+                    </div>
+                </div>-->
+            </div>
+            <!-- end row -->
+        </div>
+    </div>
+    <script>
+        function showLoadingButton() {
+            document.getElementById('submit_button').style.display ='none';
+            document.getElementById('loading_button').style.display ='block';
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html style="height: 100%">
+<head>
+    {% include 'common/headmeta-favicon.html.twig' %}
+    <!-- Sweet Alert -->
+    <link href="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.css') }}" rel="stylesheet" type="text/css">
+    {% include 'common/stylesheets.html.twig' %}
+</head>
+<!--<body class="fixed-left" style="background-color: #e6c77a">-->
+<body class="fixed-left back" style="background-color: #e6c77a; min-height: 100%">
+    {% include 'common/preloader.html.twig' %}
+
+    {% block body %}{% endblock %}
+
+    <!-- jQuery  -->
+    <script src="{{ asset('zinzer/vertical/assets/js/jquery.min.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/js/bootstrap.bundle.min.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/js/modernizr.min.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/js/detect.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/js/fastclick.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/js/jquery.slimscroll.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/js/jquery.blockUI.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/js/waves.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/js/jquery.nicescroll.js') }}"></script>
+    <script src="{{ asset('zinzer/vertical/assets/js/jquery.scrollTo.min.js') }}"></script>
+
+    {% block javascripts %}{% endblock %}
+    <!-- App js -->
+    <script src="{{ asset('zinzer/vertical/assets/js/app.js') }}"></script>
+
+    {% block bowser %}{% endblock %}
+</body>
+</html>

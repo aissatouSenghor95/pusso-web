@@ -1,0 +1,793 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %} {{ parent() }} - Demande {% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block body %}
+    <div class="row">
+        <div class="col-12">
+            {% for message in app.flashes('success') %}
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('info') %}
+                <div class="alert alert-info alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('warning') %}
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+
+            {% for message in app.flashes('error') %}
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    {{ message }}
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            {% endfor %}
+            <div class="card m-b-30">
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-12">
+                            <div class="invoice-title">
+                                <h4 class="float-lg-right text-lg-right text-sm-center font-16"><strong>Demande #<em class="text-primary">{{ demande.reference ?? demande.id }}</em></strong></h4>
+                                <h3 class="m-t-0">
+                                    <img class="pusso-img-mob" src="{{ asset('images/' ~ demande.organisme.logo ?? 'logo_pusso.png') }}" alt="logo" height="70"/>
+                                </h3>
+                            </div>
+                            <hr>
+                            <div class="row">
+                                <div class="col-lg-7 col-sm-12">
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12">
+                                            <address>
+                                                <strong>Client :</strong><br>
+                                                <i class="icon dripicons-user mr-3"></i> {{ demande.owner.prenom }} {{ demande.owner.nom }}<br>
+                                                <i class="icon dripicons-mail mr-3"></i> {{ demande.owner.username }}<br>
+                                                <i class="icon dripicons-phone mr-3"></i> {{ demande.owner.numeroTel }}
+                                            </address>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12 text-lg-right text-sm-left">
+                                            <address>
+                                                <strong>
+                                                    <span class="badge {% if demande.statut.id == 1 or demande.statut.id == 2 %} badge-warning {% elseif demande.statut.id == 3 %} badge-info {% elseif demande.statut.id == 4 %} badge-success {% else %} badge-danger {% endif %}">{{ demande.statut.libelle }}</span><br>
+                                                </strong>
+                                            </address>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div class="col-lg-6 col-sm-12 m-t-30">
+                                            <address>
+                                                <strong>Organisme:</strong><br>
+                                                {{ demande.organisme.nom }} / <br>
+                                                {{ demande.service.libelle }}
+                                            </address>
+                                        </div>
+                                        <div class="col-lg-6 col-sm-12 m-t-30 offset-sm-0 text-lg-right text-sm-left">
+                                            <address>
+                                                <strong>Date de création:</strong><br>
+                                                {{ demande.createdAt | date('d/m/Y H:i:s') }}<br><br>
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-5 col-sm-12">
+                                    <div class="row offset-lg-4 offset-sm-0">
+                                        <div class="col-lg-12 col-sm-12">
+                                            <address class="float-lg-right float-sm-left">
+                                                <strong>Informations</strong><br>
+                                                <i class="fa fa-fw fa-info mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#infoModal" class="btn-link text-pusso-primary" href=""> Récapitulatif</a><br>
+                                                {% if vich_uploader_asset(demande, 'piFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#piModal" href="{{ vich_uploader_asset(demande, 'piFile') }}" class="btn-link text-pusso-primary"> Pièce d'identité</a><br>
+                                                {% else %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <span class="text-danger">Pièce d'identité manquante.</span><br>
+                                                {% endif %}
+                                                {% if demande.service.pdf %}
+                                                    <i class="far fa-fw fa-file-pdf mr-3"></i> <a style="cursor:pointer;" href="{{ path('app_demande_pdf', {id: demande.id}) }}" class="btn-link text-pusso-primary"> Document PDF</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'contLocFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#contLocModal" href="{{ vich_uploader_asset(demande, 'contLocFile') }}" class="btn-link text-pusso-primary"> Certificat propriété/location</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'certHerFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#certHerModal" href="{{ vich_uploader_asset(demande, 'certHerFile') }}" class="btn-link text-pusso-primary"> Certificat d'hérédité</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'statusCommerceFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#statusCommerceModal" href="{{ vich_uploader_asset(demande, 'statusCommerceFile') }}" class="btn-link text-pusso-primary">Extrait registre de commerce</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'demandeManuscriteFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#demandeManuscriteModal" href="{{ vich_uploader_asset(demande, 'demandeManuscriteFile') }}" class="btn-link text-pusso-primary">Demande manuscrite</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'planSituationFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#planSituationModal" href="{{ vich_uploader_asset(demande, 'planSituationFile') }}" class="btn-link text-pusso-primary">Plan de situation et de délimitation</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'jeuSituationFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#jeuSituationModal" href="{{ vich_uploader_asset(demande, 'jeuSituationFile') }}" class="btn-link text-pusso-primary">Plan (Situation)</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'jeuMasseFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#jeuMasseModal" href="{{ vich_uploader_asset(demande, 'jeuMasseFile') }}" class="btn-link text-pusso-primary">Plan (Masse)</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'jeuPlanFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#jeuPlanModal" href="{{ vich_uploader_asset(demande, 'jeuPlanFile') }}" class="btn-link text-pusso-primary">Plan </a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'jeuCoupeFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#jeuCoupeModal" href="{{ vich_uploader_asset(demande, 'jeuCoupeFile') }}" class="btn-link text-pusso-primary">Plan (Coupe) </a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'jeuFacadeFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#jeuFacadeModal" href="{{ vich_uploader_asset(demande, 'jeuFacadeFile') }}" class="btn-link text-pusso-primary">Plan (Façade) </a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'planFosseFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#planFosseModal" href="{{ vich_uploader_asset(demande, 'planFosseFile') }}" class="btn-link text-pusso-primary">Plan des fosses septiques</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'ficheRenseignementFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#ficheRenseignementModal" href="{{ vich_uploader_asset(demande, 'ficheRenseignementFile') }}" class="btn-link text-pusso-primary">Fiche de renseignement </a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'devisProjetFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#devisProjetModal" href="{{ vich_uploader_asset(demande, 'devisProjetFile') }}" class="btn-link text-pusso-primary">Devis du projet de construction </a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'quotaFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#quotaModal" href="{{ vich_uploader_asset(demande, 'quotaFile') }}" class="btn-link text-pusso-primary">Original du quota accordé par le Ministre chargé de l’hydraulique </a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'mgFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#mgModal" href="{{ vich_uploader_asset(demande, 'mgFile') }}" class="btn-link text-pusso-primary">Mandat de gérance</a><br>
+                                                {% endif %}
+                                                {% if vich_uploader_asset(demande, 'ccdFile') is not null %}
+                                                    <i class="far fa-fw fa-id-card mr-3"></i> <a style="cursor:pointer;" data-toggle="modal" data-target="#ccdModal" href="{{ vich_uploader_asset(demande, 'ccdFile') }}" class="btn-link text-pusso-primary">Convention d'exploitation de compteurs divisionnaires</a><br>
+                                                {% endif %}
+                                            </address>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-12 col-sm-12">
+                            <div class="panel panel-default">
+                                <div class="p-2">
+                                    <h3 class="panel-title font-20"><strong>Suivi de la demande</strong></h3>
+                                </div>
+                                <div class="">
+                                    <div class="">
+                                        <table class="table dt-responsive nowrap table-responsive-lg table-responsive-sm">
+                                            <thead>
+                                            <tr>
+                                                <td><strong>Statut</strong></td>
+                                                <td class="text-center"><strong>Acteur</strong></td>
+                                                <td class="text-center"><strong>Date</strong></td>
+                                                <td class="text-right"><strong>Etat</strong></td>
+                                            </tr>
+                                            </thead>
+                                            <tbody>
+                                            <!-- foreach ($order->lineItems as $line) or some such thing here -->
+                                            <tr>
+                                                <td>Création</td>
+                                                <td class="text-center">{{ demande.owner.prenom }} {{ demande.owner.nom }}</td>
+                                                <td class="text-center">{{ demande.createdAt | date('d/m/Y H:i:s') }}</td>
+                                                <td class="text-right">
+                                                    <span class="badge badge-default">ATTENTE_PREMIERE_VALIDATION</span>
+                                                </td>
+                                            </tr>
+
+                                            {% if not (demande.statut.id == 5 or demande.statut.id == 6)  %}
+                                                {% if demande.statut.id >= 2 %}
+                                                <tr>
+                                                    <td>Première validation</td>
+                                                    <td class="text-center">Service Client (Niveau 1)</td>
+                                                    <td class="text-center">{{ demande.firstValidatedAt | date('d/m/Y H:i:s') }}</td>
+                                                    <td class="text-right">
+                                                        <span class="badge badge-warning">ATTENTE_DEUXIEME_VALIDATION</span>
+                                                    </td>
+                                                </tr>
+                                                {% endif %}
+
+                                                {% if demande.statut.id >= 3 %}
+                                                <tr>
+                                                    <td>Deuxième validation</td>
+                                                    <td class="text-center">Service Client (Niveau 2)</td>
+                                                    <td class="text-center">{{ demande.lastValidatedAt | date('d/m/Y H:i:s') }}</td>
+                                                    <td class="text-right">
+                                                        <span class="badge badge-info">ATTENTE_PAIEMENT</span>
+                                                    </td>
+                                                </tr>
+                                                {% endif %}
+                                                {% if demande.statut.id >= 4 %}
+                                                    <tr class="table-active">
+                                                        <td>Prix du service demandé</td>
+                                                        <td class="text-center">{{ demande.organisme.nom }}</td>
+                                                        <td class="text-center">{{ demande.lastValidatedAt | date('d/m/Y H:i:s') }}</td>
+                                                        <td class="text-right">
+                                                            <span class="badge badge-success">{{ demande.prix | number_format(0, '.', '.') }} FCFA</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="table-active">
+                                                        <td>Frais de service</td>
+                                                        <td class="text-center">PUSSO</td>
+                                                        <td class="text-center">{{ demande.lastValidatedAt | date('d/m/Y H:i:s') }}</td>
+                                                        <td class="text-right">
+                                                            <span class="badge badge-success">10.000 FCFA</span>
+                                                        </td>
+                                                    </tr>
+                                                    <tr class="table-active">
+                                                        <td>Total</td>
+                                                        <td class="text-center">Système</td>
+                                                        <td class="text-center">{{ demande.lastValidatedAt | date('d/m/Y H:i:s') }}</td>
+                                                        <td class="text-right">
+                                                            <span class="badge badge-success">{{ (demande.prix + 10000) | number_format(0, '.', '.') }} FCFA</span>
+                                                        </td>
+                                                    </tr>
+                                                <tr>
+                                                    <td>Paiement</td>
+                                                    <td class="text-center">Paiement</td>
+                                                    <td class="text-center">{{ demande.lastUpdate | date('d/m/Y H:i:s') }}</td>
+                                                    <td class="text-right">
+                                                        <span class="badge badge-success">TERMINEE</span>
+                                                    </td>
+                                                </tr>
+                                                {% endif %}
+                                            {% else %}
+                                                <tr>
+                                                    <td>Rejet</td>
+                                                    <td class="text-center">Service Client</td>
+                                                    <td class="text-center">{{ demande.firstValidatedBy ?? demande.lastValidatedBy | date('d/m/Y H:i:s') }}</td>
+                                                    <td class="text-right"><span class="badge badge-danger">REJETEE</span></td>
+                                                </tr>
+                                            {% endif %}
+                                            </tbody>
+                                        </table>
+                                    </div>
+
+                                    <div class="d-print-none mo-mt-2 ml-3 mr-3">
+                                        <div class="float-lg-right float-sm-left row">
+                                            <a data-toggle="modal" data-target="#modal-comments-{{ demande.id }}" style="cursor: pointer; color:white"  class="mt-1 btn btn-info col-lg-auto col-sm-12 waves-effect waves-light"><i class="fa fa-comments"></i> Commentaires</a>
+                                            {% if is_granted('ROLE_CUSTOMER_SERVICE') %}
+                                                <a id="validation-alert" style="cursor: pointer" class="mt-1 ml-lg-1 ml-sm-0 col-lg-auto col-sm-12 btn btn-success waves-effect waves-light {% if demande.statut.id != 1 %} disabled {% endif %}"><i class="fa fa-check-circle"></i> Première validation</a>
+                                                <a data-toggle="modal" data-target="#modal-reject-{{ demande.id }}" style="cursor: pointer; color:white" class="mt-1 ml-lg-1 ml-sm-0 col-lg-auto col-sm-12 btn btn-danger waves-effect waves-light {% if demande.statut.id != 1 %} disabled {% endif %}"><i class="fa fa-ban"></i> Rejeter la demande</a>
+                                            {% elseif is_granted('ROLE_PARTENAIRE') %}
+                                                <a data-toggle="modal" data-target="#modal-validate-{{ demande.id }}" style="cursor: pointer; color:white" class="mt-1 ml-lg-1 ml-sm-0 btn btn-success col-lg-auto col-sm-12 waves-effect waves-light {% if demande.statut.id != 2 %} disabled {% endif %}"><i class="fa fa-check-double"></i> Valider la demande</a>
+                                                <a data-toggle="modal" data-target="#modal-reject-{{ demande.id }}" style="cursor: pointer; color:white" class="btn ml-lg-1 ml-sm-0 col-lg-auto col-sm-12 btn-danger waves-effect waves-light {% if demande.statut.id != 2 %} disabled {% endif %}"><i class="fa fa-ban"></i> Rejeter la demande</a>
+                                            {% elseif is_granted('ROLE_CLIENT') %}
+                                                <a style="cursor: pointer; color:white" class="mt-1 ml-lg-1 ml-sm-0 btn btn-pusso-primary waves-effect col-lg-auto col-sm-12 waves-light {% if demande.statut.id != 3 %} disabled {% endif %}" id="payment-alert"><i class="fa fa-money-check"></i> Payer la demande</a>
+                                            {% endif %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div> <!-- end row -->
+
+                </div>
+            </div>
+        </div> <!-- end col -->
+    </div> <!-- end row -->
+    {{ include('modals/view_comments.html.twig', {object: demande}) }}
+    <div class="modal fade" tabindex="-1" role="dialog" id="infoModal" aria-labelledby="infoModal" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered modal-lg">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title mt-0">Récapitulatif</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    {{ include('forms/' ~ demande.service.template, {logo: demande.service.organisme.logo, organisme: demande.service.organisme.nom}) }}
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    {% if is_granted('ROLE_CUSTOMER_SERVICE') or is_granted('ROLE_PARTENAIRE') %}
+        {{ include('modals/validate_request.html.twig', {objet: demande}) }}
+        {{ include('modals/reject_request.html.twig', {object: demande}) }}
+    {% endif %}
+
+
+    {% if  vich_uploader_asset(demande, 'piFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="piModal" aria-labelledby="piModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Pièce d'identité</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'piFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'demandeManuscriteFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="demandeManuscriteModal" aria-labelledby="demandeManuscriteModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Demande manuscrite</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'demandeManuscriteFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'planSituationFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="planSituationModal" aria-labelledby="planSituationModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Plan de situation et de délimitation</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'planSituationFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'jeuSituationFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="jeuSituationModal" aria-labelledby="jeuSituationModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Jeu de Plan (situation)</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'jeuSituationFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'jeuMasseFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="jeuMasseModal" aria-labelledby="jeuMasseModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Jeu de Plan (masse)</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'jeuMasseFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'jeuPlanFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="jeuPlanModal" aria-labelledby="jeuPlanModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Plan</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'jeuPlanFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'jeuCoupeFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="jeuCoupeModal" aria-labelledby="jeuCoupeModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Jeu de plan (coupe)</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'jeuCoupeFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'jeuFacadeFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="jeuFacadeModal" aria-labelledby="jeuFacadeModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Jeu de plan (façade)</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'jeuFacadeFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'ficheRenseignementFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="ficheRenseignementModal" aria-labelledby="ficheRenseignementModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Fiche de renseignement</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'ficheRenseignementFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'devisProjetFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="devisProjetModal" aria-labelledby="devisProjetModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Devis du projet de construction</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'devisProjetFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'planFosseFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="planFosseModal" aria-labelledby="planFosseModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Plan des fosses septiques</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'planFosseFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'quotaFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="planFosseModal" aria-labelledby="planFosseModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Original du quota accordé par le Ministre chargé de l’hydraulique de durée de validité de 5ans</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'quotaFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'mgFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="mgModal" aria-labelledby="mgModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Mandat de gérance</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'mgFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+    {% if  vich_uploader_asset(demande, 'ccdFile') is not null %}
+        <div class="modal fade bs-example-modal-center" tabindex="-1" role="dialog" id="mgModal" aria-labelledby="mgModal" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title mt-0">Convention d'exploitation de compteurs divisionnaires</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body text-center">
+                        <p><img class="img-thumbnail mr-1 ml-1 mt-1 mb-1" src="{{ vich_uploader_asset(demande, 'ccdFile') }}"></p>
+                    </div>
+                </div><!-- /.modal-content -->
+            </div><!-- /.modal-dialog -->
+        </div><!-- /.modal -->
+    {% endif %}
+{% endblock %}
+{% block javascripts %}
+    {% if is_granted('ROLE_CLIENT') or is_granted('ROLE_CUSTOMER_SERVICE') %}
+        <script src="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.min.js') }}"></script>
+    {% endif %}
+    <!-- Sweet-Alert  -->
+    {% if is_granted('ROLE_CLIENT') and demande.statut.id == 3 %}
+        <script>
+            //Ajax
+            $('#payment-alert').click(function () {
+                swal({
+                    title: '<p class="text-pusso-primary">Paiement sécurisé</p>',
+                    html:
+                        '<ul class="float-left">' +
+                        '<li class="text-left">Prix service: {{ demande.prix | number_format(0, '.', '.') }} FCFA</li>' +
+                        '<li class="text-left">Frais de service: {{ demande.service.frais | number_format(0, '.', '.') }} FCFA</li>' +
+                        '<li class="text-left">Total à payer: {{ (demande.prix + demande.service.frais)  | number_format(0, '.', '.') }} FCFA</li>' +
+                        '</ul>' +
+                        '<input id="phone-input" required="true" type="tel" class="swal2-input" value="00221" autofocus placeholder="numéro de téléphone" data-mask="0022199999999">' +
+                        '<select id="mode-input" type="tel" class="swal2-input">' +
+                            '<option value="2" selected>Orange Money</option>' +
+                            '<option value="3">E-Money</option>' +
+                            '<option value="1">Free-Money</option>' +
+                            '<option value="0">Kalpay</option>' +
+                        '</select>' +
+                        '<div class="row" >'+
+                            '<img class="col-sm-2 img-fluid"    src="{{ asset('images/logo-orange-money.png') }}"/>'+
+                            '<img class="col-sm-2 img-fluid"    src="{{ asset('images/logo-e-money.png') }}"/>'+
+                            '<img class="col-sm-2 img-fluid"    src="{{ asset('images/logo-kalpay.png') }}"/>'+
+                            '<img class="col-sm-2 img-fluid"    src="{{ asset('images/logo-free-money.png') }}"/>'+
+                        '</div>',
+                    confirmButtonText: '<i class="fa fa-money-bill-alt"></i> Payer',
+                    confirmButtonClass: 'btn btn-pusso-primary waves-effect waves-light',
+                    confirmButtonColor: '#BF8520',
+                    showLoaderOnConfirm: true,
+                    showCancelButton: true,
+                    cancelButtonText: 'Annuler',
+                    allowOutsideClick: false,
+                    width: '600px',
+                    preConfirm: function() {
+                        return new Promise(function(resolve, reject) {
+                            if (true) {
+                                if(document.getElementById('phone-input').value === ''){
+                                    swal(
+                                        {
+                                            title: 'Formulaire invalide!',
+                                            html: 'Formulaire invalide: numéro de téléphone obligatoire.',
+                                            type: 'error',
+                                            showCancelButton: false,
+                                            confirmButtonClass: 'btn btn-danger',
+                                            confirmButtonColor: 'red',
+                                            confirmButtonText: 'Réessayer',
+                                            allowOutsideClick: false
+                                        }
+                                    ).then(function (result){
+                                        document.getElementById("payment-alert").click() ;
+                                    }) ;
+                                }
+                                else{
+                                    $.ajax({
+                                        type: "POST",
+                                        url: "{{ path('ajax_payment_init') }}",
+                                        data: {
+                                            phone: document.getElementById('phone-input').value,
+                                            type: document.getElementById('mode-input').value,
+                                            demande: {{ demande.id }}
+                                        },
+                                        success: function(response) {
+                                            console.log(response);
+                                            if(response != undefined && response.finish){
+                                                Swal({
+                                                    title: 'Paiement entamé',
+                                                    type: 'success',
+                                                    html: 'Vous recevrez prochainement un sms pour poursuivre votre paiement.',
+                                                    showCancelButton: false,
+                                                    confirmButtonText: 'Revenir à l\'accueil',
+                                                    confirmButtonColor: '#BF8520'
+                                                }).then(function (){
+                                                    location.href = '{{ absolute_url(path('app_demande_validees')) }}' ;
+                                                });
+                                            }else {
+                                                swal({
+                                                    title: '<p class="text-pusso-primary">Paiement sécurisé</p>',
+                                                    html:
+                                                        '<ul class="float-left">' +
+                                                        '<li class="text-left">Prix service: {{ demande.prix | number_format(0, '.', '.') }} FCFA</li>' +
+                                                        '<li class="text-left">Frais de service: {{ demande.service.frais ?? 10000 }} FCFA</li>' +
+                                                        '<li class="text-left">Total à payer: {{ (demande.prix + demande.service.frais) | number_format(0, '.', '.') }} FCFA</li>' +
+                                                        '</ul>' +
+                                                        '<input id="pin-input" required="true" maxlength="4" type="password" class="swal2-input" placeholder="Code pin">' +
+                                                        '<input id="opt-input" required="true" type="text" maxlength="4" class="swal2-input" placeholder="Code reçu">',
+                                                    confirmButtonText: '<i class="fa fa-money-bill-alt"></i> confirmer mon paiement',
+                                                    confirmButtonColor: '#BF8520',
+                                                    showLoaderOnConfirm: true,
+
+                                                    preConfirm: function() {
+                                                        return new Promise(function(resolve) {
+                                                            if (true) {
+                                                                $.ajax({
+                                                                        type: "POST",
+                                                                        url: "{{ path('ajax_payment_finish') }}",
+                                                                        data: {
+                                                                            pin: document.getElementById('pin-input').value,
+                                                                            opt: document.getElementById('opt-input').value,
+                                                                            demande: {{ demande.id }}
+                                                                        },
+                                                                        success:
+                                                                            function (response) {
+                                                                                console.log(response) ;
+                                                                                Swal({
+                                                                                    title: 'Paiement validé',
+                                                                                    html: 'Vous recevrez votre facture prochainement sur votre espace personnel.',
+                                                                                    showCancelButton: false,
+                                                                                    confirmButtonText: 'Revenir à l\'accueil',
+                                                                                    confirmButtonColor: '#BF8520'
+                                                                                }).then(function (){
+                                                                                    location.href = '{{ absolute_url(path('app_demande_validees')) }}' ;
+                                                                                });
+                                                                            },
+                                                                        error:
+                                                                            function (response){
+                                                                                console.log(response) ;
+                                                                                var message = response != undefined && response.responseJSON != undefined ? response.responseJSON.message : '' ;
+                                                                                Swal(
+                                                                                    {
+                                                                                        title: 'Paiement échoué!',
+                                                                                        html: message + ' <br> Votre compte n\'a pas été débité, veuillez réessayer',
+                                                                                        type: 'error',
+                                                                                        showCancelButton: false,
+                                                                                        confirmButtonClass: 'btn btn-danger',
+                                                                                        confirmButtonColor: 'red',
+                                                                                        confirmButtonText: 'Réessayer',
+                                                                                        allowOutsideClick: false
+                                                                                    }
+                                                                                ) ;
+                                                                            }
+                                                                    }
+                                                                );
+                                                            }
+                                                        })
+                                                    },
+                                                    allowOutsideClick: false
+                                                })
+                                            }
+                                        },
+                                        error: function (response) {
+                                            var message = response != undefined && response.responseJSON != undefined ? response.responseJSON.message : '' ;
+                                            Swal(
+                                                {
+                                                    title: 'Paiement échoué!',
+                                                    html: message + ' <br> Votre compte n\'a pas été débité, veuillez réessayer',
+                                                    type: 'error',
+                                                    showCancelButton: false,
+                                                    confirmButtonClass: 'btn btn-danger',
+                                                    confirmButtonColor: 'red',
+                                                    confirmButtonText: 'Réessayer',
+                                                    allowOutsideClick: false
+                                                }
+                                            ) ;
+                                        }
+                                    });
+                                }
+                            }
+                            else{
+                                reject() ;
+                            }
+                        })
+                    },
+                }) ;
+            });
+        </script>
+    {% endif %}
+    {% if is_granted('ROLE_CUSTOMER_SERVICE') and demande.statut.id == 1 %}
+        <script>
+            $('#validation-alert').click(function (){
+                swal({
+                    title: 'Validation d\'une demande',
+                    input: 'number',
+                    inputValue: {{ demande.frais + demande.prix }},
+                    showCancelButton: true,
+                    confirmButtonText: 'Valider',
+                    showLoaderOnConfirm: true,
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger m-l-10',
+                    confirmButtonColor: '#BF8520',
+                    preConfirm: function (prix) {
+                        return new Promise(function (resolve, reject) {
+                            if(prix === '' || prix === 0 || prix < 0){
+                                swal(
+                                    {
+                                        title: 'Formulaire invalide!',
+                                        html: 'Veuillez saisir le montant à payer. (frais + prix)',
+                                        type: 'error',
+                                        showCancelButton: false,
+                                        confirmButtonClass: 'btn btn-danger',
+                                        confirmButtonColor: 'red',
+                                        confirmButtonText: 'Réessayer',
+                                        allowOutsideClick: false
+                                    }
+                                ).then(function (result){
+                                    document.getElementById("validation-alert").click() ;
+                                }) ;
+                            }
+                            else{
+                                $.ajax({
+                                        type: "POST",
+                                        url: "{{ path('app_demande_validate_ajax') }}",
+                                        data: {
+                                            id: {{ demande.id }},
+                                            amount: prix,
+                                        },
+                                        success:
+                                            function (response) {
+                                                Swal({
+                                                    title: 'Demande validée',
+                                                    html: 'Le client sera notifié par mail et pourra ainsi procéder au paiement.',
+                                                    showCancelButton: false,
+                                                    confirmButtonText: 'Revenir à l\'accueil',
+                                                    confirmButtonColor: '#BF8520'
+                                                }).then(function (){
+                                                    location.href = '{{ absolute_url(path('app_demande_my_requests')) }}' ;
+                                                });
+                                            },
+                                        error:
+                                            function (response){
+                                                console.log(response) ;
+                                                var message = response != undefined && response.responseJSON != undefined ? response.responseJSON.message : 'Erreur inconnue, veuillez recommencer.' ;
+                                                Swal(
+                                                    {
+                                                        title: 'Validation échouée!',
+                                                        html: message,
+                                                        type: 'error',
+                                                        showCancelButton: false,
+                                                        confirmButtonClass: 'btn btn-danger',
+                                                        confirmButtonColor: 'red',
+                                                        confirmButtonText: 'Réessayer',
+                                                        allowOutsideClick: false
+                                                    }
+                                                ).then(function(){
+                                                    location.reload() ;
+                                                }) ;
+                                            }
+                                    }
+                                );
+                            }
+                        })
+                    },
+                    allowOutsideClick: false
+                })
+            }) ;
+        </script>
+    {% endif %}
+{% endblock %}

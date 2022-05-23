@@ -1,0 +1,159 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %} {{ parent() }} - Créer une demande {% endblock %}
+{% block stylesheets %}
+    <link href="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.css') }}" rel="stylesheet" type="text/css">
+{% endblock %}
+{% block body %}
+    <style>
+        .custom-file-label::after {
+            content: "Charger une image";
+        }
+    </style>
+<div class="row">
+    <div class="col-12">
+        <div class="card m-b-30">
+            <div class="card-body">
+                <div class="col-12 text-center">
+                    <p><img class="col-xl-2" id="selected-img" src="{{ asset('images/' ~ logo) }}" alt="logo"></p>
+                </div>
+                {% if not creationOK %}
+                    {{ form_start(form,{'attr' : {'class' : 'form-horizontal m-t-15', 'onsubmit':'showLoadingButton()'}}) }}
+                    <div class="row">
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label class="col-form-label">Organisme</label>
+                            {{ form_widget(form.organisme,{'attr':{'class':'form-control','placeholder':'Organisme', 'onChange':'updateImg(this)'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.organisme) }}</div>
+                        </div>
+                        <div class="form-group col-lg-6 col-sm-12">
+                            <label class="col-form-label">Service</label>
+                            {{ form_widget(form.service,{'attr':{'class':'form-control','placeholder':'Service'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.service) }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label class=" col-form-label">Nom</label>
+                            {{ form_widget(form.nom,{'attr':{'class':'form-control'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.nom) }}</div>
+                        </div>
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label class=" col-form-label">Prénom</label>
+                            {{ form_widget(form.prenom,{'attr':{'class':'form-control'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.prenom) }}</div>
+                        </div>
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label class=" col-form-label">E-mail</label>
+                            {{ form_widget(form.email,{'attr':{'class':'form-control'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.email) }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label class="col-form-label">Type de pièce d'identité</label>
+                            {{ form_widget(form.typePieceIdentite,{'attr':{'class':'form-control'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.typePieceIdentite) }}</div>
+                        </div>
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label class="col-form-label">Numéro de pièce d'identité</label>
+                            {{ form_widget(form.cin,{'attr':{'class':'form-control'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.cin) }}</div>
+                        </div>
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label class="col-form-label">Pièce d'identité</label>
+                            {{ form_widget(form.piFile,{'attr':{'class':'form-control custom-file-input'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.piFile) }}</div>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="form-group col-sm-12 col-lg-4">
+                            <label class="col-form-label">Adresse</label>
+                            {{ form_widget(form.adresse,{'attr':{'class':'form-control'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.adresse) }}</div>
+                        </div>
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label class="col-form-label">Tél. Domicile</label>
+                            {{ form_widget(form.telDomicile,{'attr':{'class':'form-control','placeholder':'A contacter'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.telDomicile) }}</div>
+                        </div>
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label class="col-form-label">Nature</label>
+                            {{ form_widget(form.nature,{'attr':{'class':'form-control','placeholder':'Nature'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.nature) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="form-group col-lg-4 col-sm-12">
+                            <label class="col-form-label">Mandataire</label>
+                            {{ form_widget(form.mandataire,{'attr':{'class':'form-control','placeholder':'Mandataire'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.mandataire) }}</div>
+                        </div>
+                        <div class="form-group col-sm-12 col-lg-4">
+                            <label class="col-form-label">Tél. portable</label>
+                            {{ form_widget(form.contact,{'attr':{'class':'form-control','placeholder':'Tél port.'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.contact) }}</div>
+                        </div>
+                        <div class="form-group col-sm-12 col-lg-4">
+                            <label class="col-form-label">Nombre de compteurs divisionaires (minimum 3)</label>
+                            {{ form_widget(form.nbrCptrDiv,{'attr':{'class':'form-control'}}) }}
+                            <div class="form-control-feedback">{{ form_errors(form.nbrCptrDiv) }}</div>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-lg-9 col-sm-8">
+                            <br>
+                            <h3 class="text-left text-uppercase">Caractéristiques techniques obligatoires à respecter.</h3>
+                        </div>
+                        <div class="col-12">
+                            <hr>
+                        </div>
+                    </div>
+                    {{ form_rest(form) }}
+                    <div class="form-group text-center row m-t-20">
+                        <div class="col-12">
+                            <button class="btn btn-pusso-primary btn-block waves-effect waves-light" id="submit_button" type="submit">Initier ma demande</button>
+                            <button style="display: none;"  id="loading_button" class="btn btn-pusso-primary btn-block waves-effect waves-light"  type="button">
+                                <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+                                Création en cours...
+                            </button>
+                        </div>
+                    </div>
+                    {{ form_end(form) }}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+{% block javascripts %}
+
+    <script src="{{ asset('zinzer/plugins/bs-custom-file-input/bs-custom-file-input.min.js') }}"></script>
+    <!-- Bootstrap inputmask js -->
+    <script src="{{ asset('zinzer/plugins/bootstrap-inputmask/bootstrap-inputmask.min.js') }}"></script>
+    <!-- Sweet-Alert  -->
+    <script src="{{ asset('zinzer/plugins/sweet-alert2/sweetalert2.min.js') }}"></script>
+    <script>
+        function showLoadingButton() {
+            document.getElementById('submit_button').style.display ='none';
+            document.getElementById('loading_button').style.display ='block';
+        }
+    </script>
+    {% if creationOK %}
+        <script>
+            swal(
+                {
+                    title: 'Bravo !',
+                    text: 'Votre demande a été créée avec succès!',
+                    type: 'success',
+                    showCancelButton: false,
+                    confirmButtonClass: 'btn btn-success',
+                    cancelButtonClass: 'btn btn-danger m-l-10'
+                }
+            ).then(function () {
+                window.location = "{{ path('app_demande_my_requests') }}"
+            })
+        </script>
+    {% endif %}
+{% endblock %}

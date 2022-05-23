@@ -1,0 +1,82 @@
+{% extends 'base.html.twig' %}
+
+{% block titre %}
+    {{ parent() }} - Nos services
+{% endblock %}
+
+{% block body %}
+    <div class="bg-transparent">
+        <div class="ml-2 mr-2" >
+            <div class="row">
+                {% for o in organismes %}
+                    <div class="col-12">
+                        <div class="card faq-box" id="accordion-o{{ o.id }}">
+                            <div class="card-body">
+                                <div class="float-left">
+                                    <div class="logo mr-2">
+                                        <img src="{{ asset('images/' ~ o.logo) }}" height="30px">
+                                    </div>
+                                </div>
+                                <div class="float-right">
+                                    <div class="logo">
+                                        <a style="cursor: pointer" title="Afficher le détail" class="float-right" data-toggle="collapse" data-parent="#accordion-o{{ o.id }}"
+                                           href="#collapse-o{{ o.id }}" aria-expanded="true"
+                                           aria-controls="collapse-o{{ o.id }}">
+                                            <span><i class="fa fa-arrow-circle-down h4 ml-3 text-pusso-primary"></i></span>
+                                        </a>
+                                    </div>
+                                </div>
+                                <a data-toggle="collapse" data-parent="#accordion-o{{ o.id }}"
+                                   href="#collapse-o{{ o.id }}" aria-expanded="true"
+                                   aria-controls="collapse-o{{ o.id }}" class="text-dark font-16 mb-3">
+                                    <b>{{o.nom}}</b>
+                                </a>
+                                <div id="collapse-o{{ o.id }}" class="collapse"
+                                     aria-labelledby="heading{{ o.id }}" data-parent="#accordion">
+                                    <div class="card-body text-muted mb-0">
+                                        <div class="row">
+                                            {% for s in o.services %}
+                                                <div class="col-lg-6 col-sm-12 col-md-12">
+                                                    <div class="card faq-box" id="accordion{{ s.id }}">
+                                                        <div class="card-body">
+                                                            <div class="float-left">
+                                                                <div class="logo mr-2">
+                                                                    <img src="{{ asset('images/' ~ s.organisme.logo) }}" height="30px">
+                                                                </div>
+                                                            </div>
+                                                            <div class="float-right">
+                                                                <div class="logo">
+                                                                    <a style="cursor: pointer" href="{{ path('app_demande_' ~ s.type , {'tag': s.tag }) }}" title="Créer une nouvelle demande" class="float-right">
+                                                                        <span><i class="dripicons-web h4 ml-3 text-pusso-primary"></i></span>
+                                                                    </a>
+                                                                </div>
+                                                            </div>
+                                                            <a data-toggle="collapse" data-parent="#accordion{{ s.id }}"
+                                                               href="#collapse{{ s.id }}" aria-expanded="true"
+                                                               aria-controls="collapse{{ s.id }}" class="text-dark font-16 mb-3">
+                                                                <b>{{s.libelle}}</b>
+                                                            </a>
+                                                            <div id="collapse{{ s.id }}" class="collapse"
+                                                                 aria-labelledby="heading{{ s.id }}" data-parent="#accordion">
+                                                                <div class="card-body text-muted mb-0">
+                                                                    {{ s.description | raw }}
+                                                                    <p class="text-center mt-2">
+                                                                        <a type="button" href="{{ path('app_demande_' ~ s.type , {'tag': s.tag }) }}" class="btn btn-pusso-primary">Faire une demande <i class="fas fa-plus-circle ml-1 text-white"></i></a>
+                                                                    </p>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

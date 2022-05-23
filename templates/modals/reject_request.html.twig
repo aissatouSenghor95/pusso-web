@@ -1,0 +1,45 @@
+<div class="modal fade" id="modal-reject-{{ object.id }}">
+    <div class="modal-dialog">
+        <div class="modal-content bg-light">
+            <div class="modal-header">
+                <h4 class="modal-title text-pusso-primary">Rejet d'une demande</h4>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <p class="text-danger">Vous êtes sur le point de rejeter la demande.</p>
+                <form name="form-{{ object.id }}" action="{{ path('app_demande_reject', {id: object.id}) }}" method="post">
+                    <fieldset>
+                        <div class="form-group">
+                            <label>Motif <b class="text-danger">(*)</b>: </label>
+                            <textarea class="form-control" id="commentaire" name="commentaire" required></textarea>
+                        </div>
+                        <div id="error-{{ object.id }}" class="text-danger form-control-feedback" style="display: none">
+                            <p class="text-danger">Veuillez indiquer le motif de rejet.</p>
+                        </div>
+                    </fieldset>
+                </form>
+            </div>
+            <div class="modal-footer justify-content-between">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Annuler</button>
+                <button type="button" class="btn btn-danger" onclick="submitForm('form-{{ object.id }}','error-{{ object.id }}')">Confirmer ?</button>
+            </div>
+        </div>
+        <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
+
+<script>
+    function submitForm(form, errorDivId) {
+        if (document.forms[form]['commentaire'].value == ""){
+            document.getElementById(errorDivId).style.display = "block";
+            return false ;
+        }
+        else {
+            document.getElementById(errorDivId).style.display = "none";
+            document.forms[form].submit();
+        }
+    }
+</script>
